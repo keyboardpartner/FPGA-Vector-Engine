@@ -1,0 +1,111 @@
+E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas *32,11# : Warning: NOSHADOW no longer supported. Line ignored.
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *265,1# : Information: Function   "ModuloMask" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *4029,1# : Information: Function   "_F16GetSectCount" possibly not used
+global_vars.pas *98,27# : Information: const string Vers3Str not used. Removed!
+global_vars.pas *112,38# : Information: const string AdrStr not used. Removed!
+global_vars.pas *113,41# : Information: const string ParamHintStr not used. Removed!
+global_vars.pas *114,41# : Information: const string InputHintStr not used. Removed!
+global_vars.pas *115,41# : Information: const string EvalHintStr not used. Removed!
+global_vars.pas *116,42# : Information: const string RunStr1 not used. Removed!
+global_vars.pas *117,42# : Information: const string RunStr2 not used. Removed!
+global_vars.pas *118,39# : Information: const string FileNumStr not used. Removed!
+global_vars.pas *152,42# : Information: const array IncrAccArray not used. Removed!
+global_vars.pas *155,43# : Information: const array IncrDigitArray not used. Removed!
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *4095,1# : Information: local Var "n" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *4095,1# : Information: local Var "i" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *4102,1# : Information: local Var "tmr" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *0,1# : Information: local Var "tmr1" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *567,1# : Information: local Var "i" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *568,1# : Information: local Var "Sec" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *572,1# : Information: local Var "unusedsec" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *573,1# : Information: local Var "vSector" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *73,1# : Information: Function   "F16_DiskFormat" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *77,1# : Information: Function   "F16_ReadSector" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *78,1# : Information: Function   "F16_WriteSector" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *80,1# : Information: Function   "F16_GetDiskFree" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *81,1# : Information: Function   "F16_GetDiskUsed" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *82,1# : Information: Function   "F16_GetUsedHandles" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *84,1# : Information: Procedure  "F16_PathExpand" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *88,1# : Information: Function   "F16_CreateDir" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *92,1# : Information: Function   "F16_RemoveDir" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *95,1# : Information: Function   "F16_ChangeDir" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *98,1# : Information: Function   "F16_PathExist" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *101,1# : Information: Function   "F16_TimeToStr" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *102,1# : Information: Function   "F16_DateToStr" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *103,1# : Information: Function   "F16_StrToTime" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *104,1# : Information: Function   "F16_StrToDate" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *3015,1# : Information: local Var "Dirs" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *107,1# : Information: Function   "F16_FileSize" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *108,1# : Information: Function   "F16_FileGetAttr" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *109,1# : Information: Function   "F16_FileGetDate" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *110,1# : Information: Function   "F16_DirGetDate" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *112,1# : Information: Function   "F16_FileSetAttr" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *113,1# : Information: Function   "F16_FileSetDate" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *114,1# : Information: Function   "F16_FileRename" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *115,1# : Information: Function   "F16_FileCopy" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *117,1# : Information: Function   "F16_FindFirst" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *120,1# : Information: Function   "F16_FindNext" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *123,1# : Information: Function   "F16_FileDelete" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *128,1# : Information: Function   "F16_CheckHandle" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *133,1# : Information: Function   "F16_FileRewrite" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *136,1# : Information: Function   "F16_FileAppend" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *142,1# : Information: Function   "F16_FilePos" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *143,1# : Information: Function   "F16_FileSeek" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *144,1# : Information: Function   "F16_FileSizeH" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *150,1# : Information: Function   "F16_BlockWrite" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *156,1# : Information: Function   "F16_FileCreate" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *158,1# : Information: Function   "F16_RandomWrite" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *159,1# : Information: Function   "F16_BlockRandomWrite" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *160,1# : Information: Procedure  "F16_FlushBufSec" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *164,1# : Information: Procedure  "_F16_WriteText" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *165,1# : Information: Procedure  "_F16_ReadText" possibly not used
+c:\program files (x86)\avrco\avrco\System\UFAT16_32.PCU *168,1# : Information: Function   "_F16_writeStart" possibly not used
+E:\Dropbox\AsteroidsClock\AVR_644\rtc_maxim.pas *38,1# : Information: Procedure  "DS_writeRAM" possibly not used
+E:\Dropbox\AsteroidsClock\AVR_644\rtc_maxim.pas *39,1# : Information: Function   "DS_readRAM" possibly not used
+E:\Dropbox\AsteroidsClock\AVR_644\rtc_maxim.pas *50,1# : Information: Procedure  "GetRTCdate" possibly not used
+global_vars.pas *14,1# : Information: Procedure  "DateTimeToDOS" possibly not used
+global_vars.pas *15,1# : Information: Procedure  "TimeToParamStr" possibly not used
+global_vars.pas *16,1# : Information: Procedure  "DateToParamStr" possibly not used
+global_vars.pas *173,1# : Information: static Var "EE_dummy" possibly not used
+global_vars.pas *241,1# : Information: static Var "UfoMode" possibly not used
+global_vars.pas *258,1# : Information: static Var "RangeTemp" possibly not used
+global_vars.pas *266,1# : Information: static Var "CmdStr" possibly not used
+global_vars.pas *268,1# : Information: static Var "OmniFlag" possibly not used
+global_vars.pas *282,1# : Information: static Var "isInteger" possibly not used
+global_vars.pas *282,1# : Information: static Var "Request" possibly not used
+global_vars.pas *302,1# : Information: static Var "ErrFlag" possibly not used
+global_vars.pas *313,1# : Information: static Var "pDummy" possibly not used
+global_vars.pas *315,1# : Information: static Var "AutoIncBlockEnd" possibly not used
+global_vars.pas *315,1# : Information: static Var "AutoIncBlockStart" possibly not used
+fpga_if.pas *16,1# : Information: Procedure  "SendFPGA8" possibly not used
+fpga_if.pas *23,1# : Information: Procedure  "SendWordToFPGA" possibly not used
+vectorengine_spi.pas *79,1# : Information: Procedure  "SPI_LoaderBegin" possibly not used
+vectorengine_spi.pas *83,1# : Information: Procedure  "SPI_LoaderWriteInc" possibly not used
+vectorengine_spi.pas *89,1# : Information: Procedure  "SPI_SetDACsDirect" possibly not used
+vectorengine_spi.pas *135,1# : Information: Procedure  "VE_SingleRun" possibly not used
+vectorengine_spi.pas *146,1# : Information: Procedure  "VE_DrawCircleSegmentAt" possibly not used
+vectorengine_spi.pas *153,1# : Information: Procedure  "VE_DrawPointAt" possibly not used
+vectorengine_spi.pas *169,1# : Information: Procedure  "VE_DrawLineToRel_b" possibly not used
+vectorengine_spi.pas *173,1# : Information: Procedure  "VE_DrawCircleAt_b" possibly not used
+vectorengine_spi.pas *623,1# : Information: local Var "vec8" possibly not used
+vectorengine_spi.pas *184,1# : Information: Procedure  "VE_DrawLargeROMvecArr" possibly not used
+vectorengine_spi.pas *186,1# : Information: Procedure  "VE_CreateAllCharVecs" possibly not used
+E:\Dropbox\AsteroidsClock\AVR_644\files.pas *39,1# : Information: local Var "FPGAresponse" possibly not used
+E:\Dropbox\AsteroidsClock\AVR_644\files.pas *39,1# : Information: local Var "loaded" possibly not used
+E:\Dropbox\AsteroidsClock\AVR_644\files.pas *15,1# : Information: Function   "FPGAload" possibly not used
+E:\Dropbox\AsteroidsClock\AVR_644\parser.pas *9,1# : Information: Procedure  "ParseGetParam" possibly not used
+E:\Dropbox\AsteroidsClock\AVR_644\parser.pas *10,1# : Information: Procedure  "ParseSetParam" possibly not used
+E:\Dropbox\AsteroidsClock\AVR_644\parser.pas *11,1# : Information: Procedure  "ParseSubCh" possibly not used
+E:\Dropbox\AsteroidsClock\AVR_644\parser.pas *16,1# : Information: Procedure  "WriteIntSer" possibly not used
+E:\Dropbox\AsteroidsClock\AVR_644\parser.pas *18,1# : Information: Procedure  "ParamIntToStr" possibly not used
+E:\Dropbox\AsteroidsClock\AVR_644\parser.pas *19,1# : Information: Procedure  "ParamLongToStr" possibly not used
+E:\Dropbox\AsteroidsClock\AVR_644\parser.pas *20,1# : Information: Procedure  "ParamLongToHex" possibly not used
+E:\Dropbox\AsteroidsClock\AVR_644\parser.pas *21,1# : Information: Procedure  "ParamIntToHex" possibly not used
+E:\Dropbox\AsteroidsClock\AVR_644\parser.pas *22,1# : Information: Procedure  "WriteParamStrSer" possibly not used
+E:\Dropbox\AsteroidsClock\AVR_644\parser.pas *23,1# : Information: Procedure  "WriteParamIntSer" possibly not used
+E:\Dropbox\AsteroidsClock\AVR_644\parser.pas *24,1# : Information: Procedure  "WriteParamByteSer" possibly not used
+E:\Dropbox\AsteroidsClock\AVR_644\parser.pas *25,1# : Information: Procedure  "WriteParamHexSer" possibly not used
+E:\Dropbox\AsteroidsClock\AVR_644\parser.pas *26,1# : Information: Procedure  "WriteParamLongSer" possibly not used
+E:\Dropbox\AsteroidsClock\AVR_644\parser.pas *28,1# : Information: Procedure  "WriteChPrefix" possibly not used
+E:\Dropbox\AsteroidsClock\AVR_644\parser.pas *29,1# : Information: Procedure  "WriteSerInp" possibly not used
+scope_clock.pas *62,1# : Information: Procedure  "CheckDamage" possibly not used

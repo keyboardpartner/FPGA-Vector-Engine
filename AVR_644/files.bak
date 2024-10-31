@@ -1,0 +1,286 @@
+Unit files;
+
+interface
+// global part
+
+{ $W+}                  // enable/disable warnings for this unit
+
+uses   UFAT16_32, fpga_if, vectorengine_spi, global_vars, parser;
+
+
+{ functions }
+Function FPGAload(myBinFileName:String[12]): Boolean;
+Function VectorLoad(myBinFileName:String[12]; start_vec: Integer): Boolean;
+
+Function FileLoad(myLoadfileName:String[12]): Boolean;
+
+procedure CheckCard;
+procedure GetDirectory;
+
+implementation
+
+
+
+
+procedure CheckCard;
+begin
+  if F16_DiskInit then
+    F16_DiskReset;
+    CardOK:=true;
+  else
+    CardOK:=false;
+  endif;
+end;
+
+procedure GetDirectory;
+var
+SR : TSearchRec;
+st : TfileName;
+begin
+// search for filename/directory entries, accept wildcards
+  i:=0;
+  CheckCard;
+  FileAnzahl:=0;
+  if CardOK then
+    if (F16_FindFirst ('\', '*.*', [faArchive], SR)) then
+      repeat
+        DirectoryArray[i]:= SR.Name;
+        inc(i);
+      until (i=32) or (not F16_FindNext (SR));
+    endif;
+    FileAnzahl:=i;
+    DirectoryDone:=true;
+  endif;
+end;
+
+procedure FlashActivity;
+// Aktivitätsanzeige 1. Zeile, starten mit ParamDigit=8!
+begin
+  if isSystimerzero(DisplayTimer) and LCDpresent then
+    setsystimer(DisplayTimer,20);
+    LCDxy_M(LCD_m1, 0, 0);
+    Write(LCDOut_M, longtostr(ByteCount shl 11));
+  endif;
+end;
+
+
+
+{###########################################################################}
+
+Function FPGAload(myBinFileName:String[12]): Boolean;
+// liest Datei "FPGAn.bin" von SD- oder MMC-Karte und programmiert
+// Spartan-2-FPGA über SPI damit
+
+var firstBlock, FPGAresponse, loaded:Boolean;
+  bytes_read: word;
+begin
+  FPGAresponse:= false;
+  ByteCount:= 0;
+  ReadErr:= false;
+  ConfErr:= false;
+  loaded:= false;
+  if CardOK then
+    if F16_FileExist ('\', myBinFileName, faFilesOnly) then
+      F16_FileAssign (BinFile, '', myBinFileName);
+      F16_FileReset (BinFile); // Datei zum Lesen öffnen
+      firstBlock:=true;
+      while not F16_EndOfFile (BinFile) do // read the entire file
+        F16_BlockRead (BinFile, @BlockArray, 256, bytes_read);
+        if firstBlock then
+          FPGA_PROG:=low;
+          udelay(1);
+          FPGA_PROG:=high;
+{$D-}
+          mdelay(10);     // Setup-Zeit FPGA Spartan-3
+{$D+}
+          firstBlock:=false;
+          // FPGA_Done muss low werden
+          if not FPGA_Done then
+            FPGAresponse:=true;
+          endif;
+          if LCDpresent then
+            LCDxy_M(LCD_m1, 0, 1);
+            Write(LCDOut_M, 'BitCount');
+            LCDxy_M(LCD_m1, 0, 0);
+            LCDclrEOL_m(LCD_m1);
+            setsystimer(DisplayTimer,10);
+          endif;
+        endif;
+        ShiftFPGAconfblock;
+        inc(ByteCount);
+        FlashActivity;
+        if FPGA_Done then
+          break;
+        endif;
+      endwhile; // until end of file
+      loaded:= true;
+      FPGAbyte:= 255;  // Wichtig: noch ein paar CCLK-Impulse nachschieben
+      ShiftFPGAconf;
+      F16_FileClose (BinFile);
+      setsystimer(DisplayTimer,100);
+      if (not FPGAresponse) or (not FPGA_Done) then
+        if LCDpresent then
+          LCDxy_M(LCD_m1, 0, 0);
+          Write(LCDOut_M, 'ConfFail');
+          setsystimer(DisplayTimer,200);
+        endif;
+        ConfErr:=true;
+      endif;
+    else
+      if LCDpresent then
+        LCDxy_M(LCD_m1, 0, 0);
+        Write(LCDOut_M, 'NotFound');
+        setsystimer(DisplayTimer,200);
+      endif;
+      ReadErr:=true;
+    endif;
+  endif;
+  if loaded then
+    write(SerOut,'/ FPGA Load OK');
+    SerCRLF;
+  else
+    write(SerOut,'/ ERR: FPGA not loaded!');
+    SerCRLF;
+  endif;
+  return(loaded);
+end;
+
+{
+// Lesen von SD viel zu langsam!
+Function DACload(myBinFileName:String[12]): Boolean;
+// Übermittelt WAV-Datei an DAC AD5447 über SPI
+var
+  block_val: LongInt;
+  block_count: Byte;
+  bytes_read: Word;
+begin
+  if CardOK then
+    VE_Stop;
+    VE_UploadBegin(0); // ab Adresse 0
+    VE_SetBeamInt(c_beammid);
+    VE_UploadVals(ve_pause, 0, 1);
+    if F16_FileExist ('\', myBinFileName, faFilesOnly) then
+      ReadErr:= false;
+      F16_FileAssign (BinFile, '', myBinFileName);
+      F16_FileReset (BinFile); // Datei zum Lesen öffnen
+      while not F16_EndOfFile (BinFile) do // read the entire file
+        F16_BlockRead(BinFile, @BlockArray, 256, bytes_read);
+        VE_UploadBegin(2); // ab Adresse 2
+        for i:= 0 to 63 do
+          VE_temp_long:= BlockArray4[i];
+          VE_UploadVals(ve_point, VE_temp_i0 shr 4, VE_temp_i1 shr 4);
+        endfor;
+        VE_UploadVals(ve_stopwait, 0, 0);
+        VE_SingleRun(0);
+        repeat
+        until VEC_DONE;
+      endwhile; // until end of file
+      F16_FileClose (BinFile);
+    else
+      if LCDpresent then
+        LCDxy_M(LCD_m1, 0, 0);
+        Write(LCDOut_M, 'NotFound');
+        setsystimer(DisplayTimer,200);
+      endif;
+      ReadErr:= true;
+    endif;
+  endif;
+  NoCard:= not CardOK;
+  return(CardOK and (not ReadErr));
+end;
+}
+
+
+Function VectorLoad(myBinFileName:String[12]; start_vec: Integer): Boolean;
+// Liest Speicherinhalt Vektor-RAM von SD und schreibt diesen in VE
+// ab start_vec, max. 1024 LongWords (4 KByte)
+var
+  block_val: LongInt;
+  idx_w, bytes_read: Word;
+begin
+  ReadErr:= true;
+  if CardOK then
+    if F16_FileExist ('\', myBinFileName, faFilesOnly) then
+      VE_Stop;
+      VE_UploadBegin(start_vec); // ab Adresse, setzt VE_CurrentVector zurück
+      ReadErr:= false;
+      F16_FileAssign (BinFile, '', myBinFileName);
+      F16_FileReset (BinFile); // Datei zum Lesen öffnen
+      while not F16_EndOfFile (BinFile) do // read the entire file
+        F16_BlockRead(BinFile, @BlockArray, 256, bytes_read);
+        for idx_w:= 0 to (bytes_read div 4) - 1  do
+          FPGAsendLong:= BlockArray4[idx_w];
+          SendFPGA32;
+          inc(VE_CurrentVector);
+        endfor;
+      endwhile; // until end of file
+      F16_FileClose (BinFile);
+    else
+      if LCDpresent then
+        LCDxy_M(LCD_m1, 0, 0);
+        Write(LCDOut_M, 'NotFound');
+        setsystimer(DisplayTimer,200);
+      endif;
+    endif;
+    // Starten mit VE_Run(0) oder VE_SingleRun(0)
+  endif;
+  return(not ReadErr);
+end;
+
+Function FileLoad(myLoadfileName:String[12]): Boolean;
+// lädt File je nach Extension in das FPGA oder ins AutoInc-RAM
+var myFileExt: String[3];  // myFileName: String[8];
+  loaded: Boolean;
+begin
+  myFileExt:=ExtractFileExt(myLoadfileName);
+  // myFileName:=ExtractFileName(myLoadfileName);
+  LEDactivity:=low;
+  write(SerOut,'/ Loading "' + myLoadfileName + '"...');
+  SerCRLF;
+  loaded:= false;
+  if (myFileExt='BIN') or (myFileExt='BIT') then
+    loaded:= FPGAload(myLoadfileName);
+    if (myLoadfileName = 'AST_CLK.BIT') then
+      VE_InitVars;
+      InitSPI;
+      VE_Stop;
+      if InvertZ then
+        SPI_LoaderCmd(lc_port0, 3); // Clock aktiv, inverses Z
+      else
+        SPI_LoaderCmd(lc_port0, 1); // Clock aktiv
+      endif;
+      InitScopeClockRequest:= true;
+      write(SerOut,'/ Init ScopeClock...');
+      SerCRLF;
+    else
+      InitScopeClockRequest:= false;
+    endif;
+  endif;
+  if myFileExt='INI' then
+    loaded:= InitLoad(myLoadfileName);
+  endif;
+  if myFileExt='VEC' then
+    InvertZ:= EE_InvertZ <> false;
+    if InvertZ then
+      SPI_LoaderCmd(lc_port0, 3); // Clock aktiv, inverses Z
+    else
+      SPI_LoaderCmd(lc_port0, 1); // Clock aktiv
+    endif;
+    loaded:= VectorLoad(myLoadfileName, 0);
+    VE_UploadVals(ve_stopwait, 0, 0);
+    VE_Run(0);
+    mdelay(200);
+    InitScopeClockDone:= false;   // Vektor-Updates verhindern
+    InitScopeClockRequest:= false;
+  endif;
+{
+  if myFileExt='WAV' then
+    DACload(myLoadfileName);
+    myReadErr:=ReadErr;
+  endif;
+}
+  return(loaded);
+end;
+
+end files.
+

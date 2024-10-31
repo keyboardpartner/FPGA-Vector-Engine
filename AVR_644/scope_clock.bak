@@ -1,0 +1,1529 @@
+unit scope_clock;
+
+// Vector Data:
+// 31 (3) 24   23 (2) 16   15 (1)  8   7  (0)  0       (In Klammern: Byte von MCU-IF)
+// CCCC YYYY   YYYY YYYY   0BBB XXXX   XXXX XXXX
+// C = Command,
+// Y = Y-Wertoder Kreisabschnitt-Ende,
+// B = B = Beam-Intensität (DACZ) und R = Reset-Bit
+// X = X-Wert, Kreis-Radius, Kreisabschnitt-Start oder Adresse
+// Commands:
+// 0  - Setze Startpunkt oder Kreismitte X/Y absolut, Beam OFF
+// 1  - Setze Startpunkt oder Kreismitte X/Y relativ, Beam OFF
+// 2  - Zeichne Linie nach X/Y absolut
+// 3  - Zeichne Linie nach X/Y relativ, Beam Low
+// 4  - Setze Kreisabschnitt (Winkel) nach X-Wert, 825 = Vollkreis
+// 5  - Setze Kreis-SIN/COS, zeichne Kreis
+// 6  - Setze Offset für nächste Objekte, X/Y
+// 7  - Setze Rotations-Mittelpunkt für nächste Objekte, X/Y
+// 8  - Setze Rotation für nächste Objekte um Offset-Nullpunkt, X = Winkel in 2 * pi * 128
+// 9  - TBD
+// 10 - Pause, X * 0,02ms
+// 11 - Dummy Cycle, NOP
+// 12 - Stop, warte auf Reset (LV_RST = '1') and (LV_INC = '1')
+// 13 - Loop, Ende der Vektoren, Start wieder mit Adresse X
+// 14 - TBD, Aufruf Subroutine an Adresse X
+// 15 - TBD, Return aus Subroutine
+
+// Logo mit Inkscape als HPGL speichern und mit hpgl_to_pas.exe konvertieren,
+// speichern als "logoX_vectors.txt", Array-Nummer einsetzen
+// c_logo1_arr[] und c_logo2_arr[]
+
+// Buttons (Bit-Nr.) ButtonPort_0:
+// 0-Fire, 1=Rturn, 2=Coin, 3=Lturn, 4=Thrust, 5=Start, 6=Shield
+// Buttons (Bit-Nr.) ButtonPort_1:
+// 0-DEC, 1-INC, 2-Set H, M, S, Weekday, Day, Month, Year, DaysLeft, Run
+// 3-END SetMode
+
+interface
+
+uses
+ fpga_if, rtc_maxim, vectorengine_spi, files;
+
+var
+  LogoNr: Byte;
+
+procedure InitScopeClock;
+procedure HandleScopeClock;
+procedure ShowLogoFiles;
+
+implementation
+
+type
+  t_object = Record
+    // Ggf. direkt an Vector Engine zu übermittelnde Werte
+    x_pos, y_pos: Integer;      // absolute Position des Objekts (Offset zur Mitte)
+    x_scale, y_scale: Integer;  // Skalierung des Objekts
+    rotation: Integer;          // Rotation in Grad entgegen Uhrzeigersinn
+    // In Zeichenroutine verwendete Werte
+    visible: Boolean;           // sichtbar/unsichtbar
+    x_start, y_start: Integer;  // Startposition bei bewegten Objekten
+    x_dest, y_dest: Integer;    // Endposition bei bewegten Objekten
+    x_inc, y_inc, rot_inc: Integer;      // Geschwindigkeitsvektor bei bewegten Objekten
+    timecount: Integer;            // Mitgeführter SysTick-Zähler
+    timer: Integer;                // Alle n Systicks ausführen
+    trigger: Boolean;
+    damage_level: Byte;            // Stufe der "Beschädigung"
+    // Start und Ende der erzeugten Vektoren für Update-Routine merken
+    vecupd_start, vecupd_redraw, vecupd_end: Integer;
+  end;
+
+  t_state = (s_initclock, s_updateclock, s_initanim_1, s_updateanim_1,
+             s_initanim_2, s_updateanim_2,
+             s_initmsgscreen, s_msgscreen,
+             s_initasteroids, s_asteroids);
+  t_sequstate = (s_sequ_init, s_sequ_1, s_sequ_2,
+             s_sequ_3, s_sequ_4, s_sequ_end);
+  t_setmode = (s_run, s_year, s_month, s_day, s_weekday, s_daysleft,
+               s_hour, s_minute, s_second);
+
+const
+
+c_sinusArr: Array[0..59] of Int8 = (
+ 0, 13, 26, 39, 52, 64, 75, 85, 94, 103, 110, 116, 121, 124,
+ 126, 127, 126, 124, 121, 116, 110, 103, 94, 85, 75, 64, 52,
+ 39, 26, 13, 0, -13, -26, -39, -52, -64, -75, -85, -94, -103,
+ -110, -116, -121, -124, -126, -127, -126, -124, -121, -116,
+ -110, -103, -94, -85, -75, -64, -52, -39, -26, -13
+  );
+
+// -128,xxx = MoveTo next vector (pen up) wie in simplex_font_32_95.txt
+c_UfoArr: Array[0..33] of Int8 = (
+  16, 20, // Anzahl Vektoren XY, Breite (Spacing) wie in simplex_font_32_95.txt
+  -10, 0, -4,-4, 4,-4, 10,0, 4,4, 2,8, -2,8, -4,4, -10,0,
+  -128,-128, -10,0,  10,0, -128,-128, -4,4, 4,4, -128,-128);
+
+c_WeekdayArr: Array[0..7] of String[11] = (
+  'SONNTAG', 'MONTAG', 'DIENSTAG',  'MITTWOCH',
+  'DONNERSTAG', 'FREITAG', 'SAMSTAG', 'KEINTAG');
+
+var
+{$DATA}
+  i, n, k: byte;
+  m: Int8;
+
+{$PDATA}
+
+  LED[@PortB, 5]: Bit;
+  SW1[@PinB, 4]: Bit;
+  SW2[@PinB, 6]: Bit;
+  // PB5=Nano-LED
+
+
+{$IDATA}
+
+  TickCount, AnimationTimer: Byte;
+  ActiveCounter: Byte;
+  ClockActive: Boolean;
+  SysTickSema,
+  Tick10sema, AnimationSema,
+  PendulumDirection: Boolean;
+  RandomInt: Integer;
+
+  ClockFace, SecondsHand, MinutesHand, HoursHand, DateDisplay, WeekdayDisplay,
+  RotatingText, Pendulum, Logo, Animation: t_object;
+
+  Ufo: t_object;
+  Shoot: t_object;
+  Flare: t_object;
+  x_arrTicksOuter, y_arrTicksOuter: Array[0..59] of Int8; // Außenkreis
+
+  State: t_state;
+  SequState: t_sequstate;
+  SetMode: t_setmode;
+  CurrentDayCount, DestDayCount, DaysLeft: Integer;
+  invert_z_mask: Integer;
+
+  MsgStr: String[19];
+
+// #############################################################################
+
+procedure onSysTick;
+// mod / div führt zu Störungen!
+// alle Hundertstel Sekunden aufgerufen
+begin
+  Inc(TickCount);
+  SysTickSema:= true;
+  Inc(Sec100);
+  if Sec100 >= 100 then
+    Sec100:= 0;
+  endif;
+end;
+
+
+procedure RTCtickHour;
+begin
+  HourSema:= true;
+end;
+
+procedure RTCtickMinute;
+begin
+  MinuteSema:= true;
+end;
+
+procedure RTCtickSecond;
+begin
+  SecondSema:= true;
+end;
+
+
+
+// #############################################################################
+// ###                         VECTOR ENGINE                                 ###
+// #############################################################################
+// Vector Data (LV_INC = 1):
+// 31 (3) 24   23 (2) 16   15 (1)  8   7  (0)  0       (In Klammern: Byte von MCU-IF)
+// CCCC YYYY   YYYY YYYY   RBBB XXXX   XXXX XXXX
+// C = Command,
+// Y = Y-Wertoder Kreisabschnitt-Ende,
+// B = Beam-Intensität (DACZ) und R = Reset-Bit
+// X = X-Wert, Kreis-Radius, Kreisabschnitt-Start oder Adresse
+// Commands:
+// 0  - Setze Startpunkt oder Kreismitte X/Y absolut
+// 1  - Setze Startpunkt oder Kreismitte X/Y relativ
+// 2  - Zeichne Linie nach X/Y absolut
+// 3  - Zeichne Linie nach X/Y relativ, Beam Low
+// 4  - Setze Kreisabschnitt (Winkel) nach X-Wert, 825 = Vollkreis
+// 5  - Setze Kreis-Radius nach X-Wert und Auflösung nach Y-Wert (1..7), zeichne Kreis
+// 6  - Setze Offset für nächste Objekte, X/Y
+// 7  - Setze Rotations-Mittelpunkt für nächste Objekte, X/Y
+// 8  - Setze Rotation für nächste Objekte um Offset-Nullpunkt, X = Winkel in 2 * pi * 128
+// 9  - Setze Skalierung nach X/Y-Werten, $7FF= 100%
+// 10 - Pause, X-Wert * 5µs
+// 11 - Dummy Cycle, NOP
+// 12 - Stop, warte auf Reset
+// 13 - Jump/Loop, Ende der Vektoren, Start wieder mit Adresse X
+// 14 - Aufruf Subroutine an Adresse X
+// 15 - Return aus Subroutine
+// #############################################################################
+
+procedure CreateClockFace;
+var tx, ty: Int8;
+begin
+  ClockFace.vecupd_start:= VE_CurrentVector;
+  VE_UploadVals(ve_set_offs, 0, 0);
+  for k:= 0 to 59 do
+    tx:= x_arrTicksOuter[k];
+    ty:= y_arrTicksOuter[k];
+    if k mod 5 = 0 then
+      VE_MoveTo_b(tx, ty);
+      tx:= tx - (tx div 10);
+      ty:= ty - (ty div 10);
+      VE_DrawLineTo_b(tx, ty, VE_beamhi);
+    else
+      VE_DrawPointAt_b(tx, ty, VE_beammid);
+    endif;
+  endfor;
+  VE_DrawCircleSegmentAt_b(0, 0, 10, 0, 360, VE_beammid);
+  VE_DrawCircleSegmentAt_b(0, 0, 112, 0, 360, VE_beammid);
+  VE_DrawCircleSegmentAt_b(0, 0, 90, 180 - 20, 180 + 20, VE_beammid);
+  tx:= -10;
+  ty:= 83;
+  VE_DrawCharAt_b(tx, ty, '1', 50);
+  tx:= -2;
+  VE_DrawCharAt_b(tx, ty, '2', 50);
+  tx:= -5;
+  ty:= -93;
+  VE_DrawCharAt_b(tx, ty, '6', 50);
+  tx:= 85;
+  ty:= -6;
+  VE_DrawCharAt_b(tx, ty, '3', 50);
+  tx:= -94;
+  ty:= -6;
+  VE_DrawCharAt_b(tx, ty, '9', 50);
+  ClockFace.vecupd_end:= VE_CurrentVector;
+  VE_SetBeamInt(VE_beamlow);
+  VE_DrawStringAt_b(-30, 30, 'NOCH ' + IntToSTr(DaysLeft) + ' TAGE', 25);  // mögl. viele Vektoren
+end;
+
+procedure UpdateSecondsHand;
+begin
+  // SecondsHand.rotations:= mulDivInt(Integer(Sec100), 6, 100) - 6;
+  SecondsHand.rotation:= 360 - Integer(Second) * 6;
+  VE_UploadBegin(SecondsHand.vecupd_start);
+  VE_SetRotationDeg(SecondsHand.rotation);  // 1 Vektor
+end;
+
+procedure CreateSecondsHand;
+var tx, ty: Int8;
+begin
+  // Sekundenzeiger
+  SecondsHand.vecupd_start:= VE_CurrentVector;
+  UpdateSecondsHand; // trägt ve_set_rot_deg an Adresse +2 ein
+  SecondsHand.vecupd_end:= VE_CurrentVector;
+  VE_DrawCircleSegmentAt_b(0, -20, 4, 0, 360, VE_beammid);
+  VE_MoveTo_b(0, -16);
+  VE_DrawLineTo_b(0, 100, VE_beammid);
+  VE_DrawPinPointAt_b(0, 100, VE_beamhi);
+  VE_DrawCircleSegmentAt_b(0, 0, 2, 0, 360, VE_beammid);
+  VE_UploadVals(ve_set_rot_deg, 0, 0); // da Rotation upgedated wurde
+end;
+
+procedure UpdateMinutesHand;
+begin
+  // minute_degsteps:= mulDivInt(Integer(Sec100), 6, 100) - 6;
+  MinutesHand.rotation:= 360 - Integer(Minute) * 6;
+  VE_UploadBegin(MinutesHand.vecupd_start);
+  VE_SetRotationDeg(MinutesHand.rotation);  // 1 Vektor
+end;
+
+procedure CreateMinutesHand;
+begin
+  MinutesHand.vecupd_start:= VE_CurrentVector;
+  UpdateMinutesHand; // trägt ve_set_rot_deg an Adresse +2 ein
+  // Minutenzeiger auf 12:00
+  VE_MoveTo_b(0, 95);
+  VE_DrawLineTo_b(0, 10, VE_beamlow);
+  VE_MoveTo_b(0, 95);
+  VE_DrawLineTo_b(-4, 65, VE_beammid);
+  VE_DrawLineTo_b(-2, 10, VE_beammid); // Endposition
+  VE_MoveTo_b(0, 95);
+  VE_DrawLineTo_b(4, 65, VE_beammid);
+  VE_DrawLineTo_b(2, 10, VE_beammid); // Endposition
+  MinutesHand.vecupd_end:= VE_CurrentVector;
+  VE_UploadVals(ve_set_rot_deg, 0, 0); // da Rotation upgedated wurde
+end;
+
+procedure UpdateHoursHand;
+begin
+  // minute_degsteps:= mulDivInt(Integer(Sec100), 6, 100) - 6;
+  HoursHand.rotation:= 360 - Integer(Hour) * 30 - Integer(Minute) div 2;
+  VE_UploadBegin(HoursHand.vecupd_start);
+  VE_SetRotationDeg(HoursHand.rotation);  // 1 Vektor
+end;
+
+procedure CreateHoursHand;
+begin
+  HoursHand.vecupd_start:= VE_CurrentVector;
+  UpdateHoursHand; // trägt ve_set_rot_deg an Adresse +2 ein
+  HoursHand.vecupd_end:= VE_CurrentVector;
+  // Stundenzeiger auf 12:00
+  VE_MoveTo_b(0, 65);
+  VE_DrawLineTo_b(0, 10, VE_beamlow);
+  VE_MoveTo_b(0, 65);
+  VE_DrawLineTo_b(-5, 45, VE_beammid);
+  VE_DrawLineTo_b(-3, 10, VE_beammid); // Endposition
+  VE_MoveTo_b(0, 65);
+  VE_DrawLineTo_b(5, 45, VE_beammid);
+  VE_DrawLineTo_b(3, 10, VE_beammid); // Endposition
+  VE_UploadVals(ve_set_rot_deg, 0, 0); // da Rotation upgedated wurde
+end;
+
+procedure UpdatePendulum;
+begin
+  VE_UploadBegin(Pendulum.vecupd_start);
+  VE_UploadVals(ve_set_rot_deg, Pendulum.rotation, 0);
+  if not IncToLim(Pendulum.timecount, Pendulum.timer) then
+    Pendulum.timecount:= 0;
+    Pendulum.rotation:= Pendulum.rotation + Pendulum.rot_inc;
+    if (Pendulum.rotation <= 401 - 46) or (Pendulum.rotation >= 401 + 46) then
+      // Pendelrichtung umkehren
+      Pendulum.rot_inc:= -Pendulum.rot_inc;
+    endif;
+    // in Endstellungen abbremsen
+    if (Pendulum.rot_inc > 0) then
+      if Pendulum.rotation < 401 + 38 then  // aufsteigend
+        Pendulum.timer:= 0;
+      else
+        Pendulum.timer:= 2;
+      endif;
+    else
+      if Pendulum.rotation > 401 - 38 then
+        Pendulum.timer:= 0;
+      else
+        Pendulum.timer:= 2;
+      endif;
+    endif;
+ endif;
+end;
+
+procedure CreatePendulum;
+begin
+  // Pendel
+  Pendulum.rotation:= 401;
+  Pendulum.rot_inc:= 1;
+  Pendulum.timecount:= 0;
+  Pendulum.timer:= 1;      // alle n SysTicks auführen
+  Pendulum.vecupd_start:= VE_CurrentVector;
+  UpdatePendulum;
+  VE_DrawCircleSegmentAt_b(0, 80, 8, 0, 360, VE_beamlow); // auf Mittelposition unten
+  VE_MoveTo_b(0, 10);
+  VE_DrawLineTo_b(0, 72, VE_beamlow);   // Mittelpunkt minus Radius
+  Pendulum.vecupd_end:= VE_CurrentVector;
+  VE_SetRotationDeg(0);     // 1 Vektor
+end;
+
+// #############################################################################
+// #############################################################################
+// #############################################################################
+
+
+Procedure NewRandomInc(var object: t_object);
+var my_rand_i, attractor: Integer;
+begin
+
+  my_rand_i:= Integer(RandomInt and 15) - 8;  // - 2000..2000
+  // mit Random-Attraktor zur Mitte
+  attractor:= (object.x_pos div 300);
+  if Bit(RandomInt, 13) then
+    object.x_inc:= my_rand_i;
+    if my_rand_i > 0 then
+      object.x_inc:= object.x_inc - attractor;
+    endif;
+    if my_rand_i < 0 then
+      object.x_inc:= object.x_inc + attractor;
+    endif;
+  endif;
+  if Bit(RandomInt, 9) then
+    object.y_inc:= my_rand_i;
+  endif;
+  object.timecount:= 0;
+  if Second > 50 then
+    object.x_inc:= object.x_inc + 1;
+  endif;
+end;
+
+Procedure NewRandomEndpos(var object: t_object);
+var my_rand_i: Integer;
+begin
+  my_rand_i:= (RandomInt div 8) - 2048;  // -2048..2048
+  if Bit(my_rand_i, 5) then
+    object.x_pos:= -2000;
+    object.x_inc:= my_rand_i and 3;
+    object.y_pos:= my_rand_i;
+  else
+    object.x_pos:= 2000;
+    object.x_inc:= (my_rand_i and 3) - 4;
+    object.y_pos:= my_rand_i;
+  endif;
+  if Bit(my_rand_i, 8) then
+    object.x_pos:= my_rand_i;
+    object.y_pos:= -1700;
+    object.y_inc:= my_rand_i and 3;
+  else
+    object.x_pos:= my_rand_i;
+    object.y_pos:= 1700;
+    object.y_inc:= (my_rand_i and 3) - 4;
+  endif;
+  object.timecount:= 0;
+end;
+
+
+// #############################################################################
+// #############################################################################
+
+Procedure CheckDamage;
+var xb, yb: Int8;
+begin
+  xb:= Int8(Flare.x_start  div 16);
+  yb:= Int8(Flare.y_start div 16);
+  if valueinrange(xb, -55, 55) and valueinrange(yb, -45, -20) then
+    inctolim(RotatingText.damage_level, 3);
+  elsif valueinrange(xb, -128, -60) and valueinrange(yb, -128, -60) then
+    inctolim(Logo.damage_level, 3);
+  elsif valueinrange(xb, -55, 55) and valueinrange(yb, 38, 60) then
+    inctolim(DateDisplay.damage_level, 3);
+    DateDisplay.rotation:= 15;
+  elsif valueinrange(xb, -50, 50) and valueinrange(yb, 61, 90) then
+    inctolim(WeekdayDisplay.damage_level, 3);
+    WeekdayDisplay.rotation:= 15;
+  endif;
+end;
+
+// #############################################################################
+// #############################################################################
+
+Procedure UpdateShoot;
+var
+  my_scale: Integer;
+begin
+  VE_UploadBegin(Shoot.vecupd_start);
+  if Shoot.trigger then
+    Shoot.trigger:= false;
+    Shoot.visible:= true;
+    Shoot.x_inc:= Shoot.x_pos div 150;
+    Shoot.y_inc:= Shoot.y_pos div 150;
+    Shoot.x_start:= Ufo.x_pos;
+    Shoot.x_pos:= Shoot.x_start;
+    Shoot.y_start:= Ufo.y_pos;
+    Shoot.y_pos:= Shoot.y_start;
+    Shoot.timecount:= 0;
+  endif;
+
+  if Shoot.visible then
+    Shoot.x_pos:= Shoot.x_pos + Shoot.x_inc;
+    Shoot.y_pos:= Shoot.y_pos + Shoot.y_inc;
+    Inc(Shoot.timecount);
+    if Shoot.timecount > 80 then
+      Shoot.visible:= false;
+      Flare.trigger:= true;
+    endif;
+    VE_UploadVals(ve_nop, 0, 0);  // Dummy, Vektor 0, ggf durch JUMP ersetzt
+  else
+    VE_UploadVals(ve_jump, Shoot.vecupd_end + 1, 0);  // skip Shoot, JUMP to end
+  endif;
+  VE_DrawPinPointAt(Shoot.x_pos, Shoot.y_pos, VE_beamhi, 20);
+  VE_SetRotationDeg(Shoot.rotation);
+end;
+
+Procedure CreateShoot;
+var temp_addr: Integer;
+begin
+  Shoot.visible:= True;  // damit Vektoren eingetragen werden
+  Shoot.timecount:= 0;
+  Shoot.vecupd_start:= VE_CurrentVector;
+  Shoot.vecupd_end:= VE_CurrentVector;
+  UpdateShoot;
+  Shoot.vecupd_end:= VE_CurrentVector;
+  Shoot.visible:= false;
+end;
+
+// #############################################################################
+
+Procedure UpdateFlare;
+var my_scale: Integer;
+begin
+  VE_UploadBegin(Flare.vecupd_start);
+  if Flare.trigger then
+    Flare.trigger:= false;
+    Flare.visible:= True;
+    Flare.timecount:= 0;
+    Flare.rotation:= RandomInt shr 8;
+    Flare.x_start:= Shoot.x_pos;
+    Flare.y_start:= Shoot.y_pos;
+    CheckDamage;
+  endif;
+  if Flare.visible then
+    inc(Flare.timecount);
+    if Flare.timecount >  Flare.Timer then
+      Flare.visible:= false;
+    endif;
+    my_scale:= Flare.timecount * 3;
+    VE_UploadVals(ve_nop, 0, 0);  // Dummy, Vektor 0, ggf durch JUMP ersetzt
+    VE_UploadVals(ve_set_offs, Flare.x_start, Flare.y_start);
+    VE_UploadVals(ve_set_scale, my_scale, my_scale);
+    VE_UploadVals(ve_set_rot_deg, Flare.rotation, 0);
+    if Bit(Flare.rotation, 0) then
+      VE_DrawPinPointAt_b(-100, 0, VE_beamhi);  // besteht aus drei Vektoren!
+      VE_DrawPinPointAt_b(-40, 20, VE_beammid);
+      VE_DrawPinPointAt_b(-80, -40, VE_beammid);
+      VE_DrawPinPointAt_b(-20, -70, VE_beamhi);
+      VE_DrawPinPointAt_b(90, 0, VE_beamhi);
+      VE_DrawPinPointAt_b(20, 100, VE_beamhi);
+      VE_DrawPinPointAt_b(40, -70, VE_beammid);
+      VE_DrawPinPointAt_b(30, -50, VE_beamhi);
+    else
+      VE_DrawPinPointAt_b(-80, 10, VE_beamhi);  // besteht aus drei Vektoren!
+      VE_DrawPinPointAt_b(-30, 30, VE_beammid);
+      VE_DrawPinPointAt_b(-80, -40, VE_beamhi);
+      VE_DrawPinPointAt_b(-70, -70, VE_beammid);
+      VE_DrawPinPointAt_b(90, 20, VE_beamhi);
+      VE_DrawPinPointAt_b(50, 90, VE_beamhi);
+      VE_DrawPinPointAt_b(20, -20, VE_beamhi);
+      VE_DrawPinPointAt_b(30, -100, VE_beamhi);
+    endif;
+  else
+    // skip Flare, JUMP to end
+    VE_UploadVals(ve_jump, Flare.vecupd_end + 1, 0);
+  endif;
+  VE_UploadVals(ve_set_scale, 1024, 1024);
+  VE_UploadVals(ve_set_offs, 0, 0);
+  VE_UploadVals(ve_set_rot_deg, 0, 0);
+end;
+
+Procedure CreateFlare;
+var vcount: Byte;
+begin
+  Flare.visible:= True;  // damit Vektoren eingetragen werden
+  Flare.timecount:= 0;
+  Flare.Timer:= 80;
+  Flare.vecupd_start:= VE_CurrentVector;
+  Flare.vecupd_end:= VE_CurrentVector;
+  UpdateFlare;
+  Flare.vecupd_end:= VE_CurrentVector;
+  Flare.visible:= False;
+end;
+
+// #############################################################################
+// ###                               U F O                                   ###
+// #############################################################################
+
+Procedure UpdateUfo;
+begin
+  if Ufo.trigger then
+    Ufo.visible:= true;
+    Ufo.trigger:= false;
+  endif;
+  if ((Ufo.timecount and $7F) = 0) then
+    NewRandomInc(Ufo);
+  endif;
+  if abs(Ufo.x_pos) > 2047 then
+    Ufo.visible:= false;
+    NewRandomEndpos(Ufo);
+  endif;
+  if abs(Ufo.y_pos) > 1700 then
+    Ufo.y_inc:= -Ufo.y_inc;
+  endif;
+  Ufo.x_pos:= Ufo.x_pos + Ufo.x_inc;
+  Ufo.y_pos:= Ufo.y_pos + Ufo.y_inc;
+  if Ufo.visible then
+    inc(Ufo.timecount);
+    if (Ufo.timecount = 50) then
+      Shoot.trigger:= true;
+      NewRandomEndpos(Shoot);
+    endif;
+  endif;
+  VE_UploadBegin(Ufo.vecupd_start);
+  if Ufo.visible then
+    VE_UploadVals(ve_nop, 0, 0);  // Dummy, Vektor 0, ggf durch JUMP ersetzt
+  else
+    VE_UploadVals(ve_jump, Ufo.vecupd_end + 1, 0);  // skip Ufo, JUMP to end
+  endif;
+  // Ufo wurde an Position 0,0 geplottet, Position über Offset
+  VE_UploadVals(ve_move_abs, 0,0);
+  VE_UploadVals(ve_set_offs, Ufo.x_pos, Ufo.y_pos);
+end;
+
+Procedure CreateUfo;
+begin
+  Ufo.visible:= false;  // damit Vektoren eingetragen werden
+  Ufo.x_inc:= 2;
+  Ufo.y_inc:= 1;
+  Ufo.vecupd_start:= VE_CurrentVector;
+  Ufo.vecupd_end:= VE_CurrentVector;
+  Ufo.timecount:= 0;
+  UpdateUfo;
+  VE_SetBeamInt(VE_beamhi);
+  VE_DrawROMvecArrRel(@c_UfoArr, 60);
+  Ufo.vecupd_end:= VE_CurrentVector;
+  VE_UploadVals(ve_set_scale, 1024, 1024);
+  VE_UploadVals(ve_set_offs, 0, 0);
+end;
+
+// #############################################################################
+// ###                      B O T T O M   L O G O                            ###
+// #############################################################################
+
+Procedure UpdateLogo;
+begin
+  if Logo.damage_level = 0 then
+    Logo.x_inc:= 8;
+    Logo.x_scale:= 1024;
+    Logo.timer:= 1;
+    Logo.rot_inc:= 1;
+    Logo.rotation:= 0;
+  else
+    inc(Logo.x_scale, Logo.x_inc);
+    if Logo.x_scale > 1024 then
+      Logo.x_inc:= -8;
+    endif;
+    if Logo.x_scale < -1024 then
+      Logo.x_inc:= 8;
+    endif;
+    if Logo.damage_level > 1 then
+      if not inctolim(Logo.timecount, Logo.timer) then
+        Logo.timecount:= 0;
+        Dec(Logo.rotation, Logo.rot_inc);
+        if Logo.rotation < 0 then
+          Logo.rotation:= 359;
+        endif;
+      endif;
+    endif;
+  endif;
+  VE_UploadBegin(Logo.vecupd_start);
+  VE_SetRotationDeg(Logo.rotation);
+  VE_UploadVals(ve_set_rot_mid, 220, 220);
+  VE_UploadVals(ve_set_offs, -1450 - Logo.x_scale div 3, -1650);
+  VE_UploadVals(ve_set_scale, Logo.x_scale, 1024);
+end;
+
+Procedure CreateLogo;
+var logo_x: Int8;
+begin
+  Logo.damage_level:= 0;
+  Logo.vecupd_start:= VE_CurrentVector;
+  UpdateLogo;
+  logo_x:= 0;
+{$IFDEF MAKEMAGAZIN}
+  VE_SetBeamInt(VE_beammid);
+  VE_DrawStringAt_b(0, 10, 'MAKE:', 38);
+  VE_DrawStringAt_b(0, 0, 'MAGAZIN', 25);
+{$ELSE}
+  VE_SetBeamInt(VE_beammid);
+  VE_DrawStringAt_b(0, 21, 'KEY', 38);
+  VE_DrawStringAt_b(0, 10, 'BOARD', 34);
+  VE_DrawStringAt_b(0, 0, 'PARTNER', 25);
+{$ENDIF}
+  VE_UploadVals(ve_set_scale, 1024, 1024);
+  VE_SetOffset_b(0, 0);
+  VE_SetRotationMid_b(0, 0);
+  VE_SetRotationDeg(0);
+
+end;
+
+// #############################################################################
+// ###                          M I D  L O G O                               ###
+// #############################################################################
+
+Procedure UpdateRotatingText;
+var
+  my_tick: Boolean;
+begin
+  if not inctolim(RotatingText.timecount, RotatingText.timer) then
+    RotatingText.timecount:= 0;
+  endif;
+  my_tick:= RotatingText.timecount = 0;
+
+  if my_tick then
+    Dec(RotatingText.rotation, RotatingText.rot_inc);
+    if RotatingText.rotation < 0 then
+      RotatingText.rotation:= 359;
+    endif;
+  endif;
+
+  case RotatingText.damage_level of
+  0:
+    RotatingText.rotation:= 0;
+    RotatingText.y_pos:= -600;
+    RotatingText.timer:= 2;
+    RotatingText.rot_inc:= 1;
+    |
+  1:
+    RotatingText.timer:= 1;
+    |
+  else
+    RotatingText.rot_inc:= 2;
+    dec(RotatingText.y_pos, 10);
+    if RotatingText.y_pos < -1800 then
+      RotatingText.y_pos:= -1800;
+      RotatingText.rot_inc:= 0;
+    endif;
+    if my_tick then
+      inctolim(RotatingText.timer, 10);
+    endif;
+  endcase;
+  VE_UploadBegin(RotatingText.vecupd_start);
+  VE_SetRotationDeg(RotatingText.rotation);
+  VE_UploadVals(ve_set_offs, 0, RotatingText.y_pos);
+end;
+
+Procedure CreateRotatingText;
+// Rotierender Text
+begin
+  RotatingText.damage_level:= 0;
+  RotatingText.vecupd_start:= VE_CurrentVector;
+  UpdateRotatingText;
+{$IFDEF MAKEMAGAZIN}
+  VE_SetBeamInt(VE_beammid);
+  VE_SetRotationMid_b(0, 8); // Mitte der Schrift: 8 bei 70%
+  VE_DrawStringAt_b(-28, 0, 'MAKE:', 65);  // setzt scale neu!
+{$ELSE}
+  VE_SetBeamInt(VE_beammid);
+  VE_SetRotationMid_b(0, 6); // Mitte der Schrift: 6 bei 50%
+  VE_DrawStringAt_b(-38, 0, 'HX3 TIME', 50);  // setzt scale neu!
+{$ENDIF}
+  VE_SetRotationMid_b(0, 0);
+  VE_SetRotationDeg(0);
+  VE_UploadVals(ve_set_scale, 1024, 1024);
+  VE_UploadVals(ve_set_offs, 0, 0);
+  RotatingText.vecupd_end:= VE_CurrentVector;
+end;
+
+// #############################################################################
+// ###                       ´      D A T U M                                ###
+// #############################################################################
+
+procedure UpdateDatePos;
+// Achtung: Unterschiedliche Anzahl der Vektoren je nach Datum!
+var
+  date_str: String[11];
+begin
+  if DateDisplay.damage_level = 0 then
+    DateDisplay.x_inc:= 8;
+    DateDisplay.x_scale:= 1024;
+    DateDisplay.timer:= 1;
+    DateDisplay.rot_inc:= 1;
+    DateDisplay.rotation:= 0;
+  else
+    inc(DateDisplay.x_scale, DateDisplay.x_inc);
+    if DateDisplay.x_scale > 1024 then
+      DateDisplay.x_inc:= -8;
+    endif;
+    if DateDisplay.x_scale < -1024 then
+      DateDisplay.x_inc:= 8;
+    endif;
+    if DateDisplay.damage_level > 1 then
+      DateDisplay.rot_inc:= 2;
+      if not inctolim(DateDisplay.timecount, DateDisplay.timer) then
+        DateDisplay.timecount:= 0;
+        Dec(DateDisplay.rotation, DateDisplay.rot_inc);
+        if DateDisplay.rotation < 0 then
+          DateDisplay.rotation:= 359;
+        endif;
+      endif;
+    endif;
+  endif;
+  VE_UploadBegin(DateDisplay.vecupd_start);  // wird komplett ersetzt
+  VE_SetRotationDeg(DateDisplay.rotation);
+  VE_UploadVals(ve_set_rot_mid, 0, 100);
+  VE_UploadVals(ve_set_offs, 0, 800);
+  VE_UploadVals(ve_set_scale, DateDisplay.x_scale, 1024);
+end;
+
+procedure UpdateDateString;
+// Achtung: Unterschiedliche Anzahl der Vektoren je nach Datum!
+var
+  date_str: String[11];
+begin
+  VE_UploadBegin(DateDisplay.vecupd_redraw);  // wird komplett ersetzt
+  date_str:= ByteToStr(Byte(Day):2:'0') + '.' + ByteToStr(Byte(Month):2:'0')
+             + '.20' + ByteToStr(Byte(Year):2:'0');
+  VE_SetBeamInt(VE_beammid);
+  VE_DrawStringAt_b(-45, 0, date_str, 50);
+  VE_UploadVals(ve_jump, DateDisplay.vecupd_end + 1, 0);  // skip garbage, JUMP to end
+  DateDisplay.damage_level:= 0;
+end;
+
+
+procedure CreateDate;
+var temp_addr: Integer;
+// Achtung: Unterschiedliche Anzahl der Vektoren je nach Datum!
+// Deshalb wird zunächst eine Liste mit den meisten Vektoren gebildet,
+// die später überschrieben und mit einem Jump ans Ende versehen wird.
+begin
+  DateDisplay.vecupd_start:= VE_CurrentVector;
+  UpdateDatePos;
+  DateDisplay.vecupd_redraw:= VE_CurrentVector;
+  VE_SetBeamInt(VE_beamlow);
+  VE_DrawStringAt_b(0, 0, '88:88:8888', 50);  // mögl. viele Vektoren
+  VE_UploadVals(ve_nop, 0, 0);
+  VE_UploadVals(ve_nop, 0, 0);
+  DateDisplay.vecupd_end:= VE_CurrentVector;
+  VE_SetOffset_b(0, 0);
+  VE_SetRotationDeg(0);
+  VE_UploadVals(ve_set_scale, 1024, 1024);  // wurde geändert
+  VE_UploadVals(ve_set_rot_mid, 0, 0);
+end;
+
+// #############################################################################
+// ###                    ´      W E E K D A Y                               ###
+// #############################################################################
+
+procedure UpdateWeekdayPos;
+begin
+  if WeekdayDisplay.damage_level = 0 then
+    WeekdayDisplay.x_inc:= 5;
+    WeekdayDisplay.x_scale:= 1024;
+    WeekdayDisplay.timer:= 1;
+    WeekdayDisplay.rot_inc:= 1;
+    WeekdayDisplay.rotation:= 0;
+  else
+    WeekdayDisplay.rot_inc:= 2;
+    inc(WeekdayDisplay.x_scale, WeekdayDisplay.x_inc);
+    if WeekdayDisplay.x_scale > 1024 then
+      WeekdayDisplay.x_inc:= -5;
+    endif;
+    if WeekdayDisplay.x_scale < -1024 then
+      WeekdayDisplay.x_inc:= 5;
+    endif;
+    if WeekdayDisplay.damage_level > 1 then
+      WeekdayDisplay.rot_inc:= 3;
+      if not inctolim(WeekdayDisplay.timecount, WeekdayDisplay.timer) then
+        WeekdayDisplay.timecount:= 0;
+        Dec(WeekdayDisplay.rotation, WeekdayDisplay.rot_inc);
+        if WeekdayDisplay.rotation < 0 then
+          WeekdayDisplay.rotation:= 359;
+        endif;
+      endif;
+    endif;
+  endif;
+  VE_UploadBegin(WeekdayDisplay.vecupd_start);  // wird komplett ersetzt
+  VE_SetRotationDeg(WeekdayDisplay.rotation);
+  VE_UploadVals(ve_set_rot_mid, 0, 50);
+  VE_UploadVals(ve_set_offs, 0, 1050);
+  VE_UploadVals(ve_set_scale, WeekdayDisplay.x_scale, 1024);
+end;
+
+
+procedure UpdateWeekday;
+// Achtung: Unterschiedliche Anzahl der Vektoren je nach Datum!
+var
+  wd_str: String[11];
+begin
+  VE_UploadBegin(WeekdayDisplay.vecupd_redraw);  // wird komplett ersetzt
+  wd_str:= c_WeekdayArr[Weekday];
+  VE_SetBeamInt(VE_beamlow);
+  VE_DrawStringAt_b(-Int8(length(wd_str) * 3) - 4, 0, wd_str, 35);
+  VE_UploadVals(ve_jump, WeekdayDisplay.vecupd_end + 1, 0);  // skip garbage, JUMP to end
+  WeekdayDisplay.damage_level:= 0;
+end;
+
+
+procedure CreateWeekday;
+var temp_addr: Integer;
+// Achtung: Unterschiedliche Anzahl der Vektoren je nach Datum!
+// Deshalb wird zunächst eine Liste mit den meisten Vektoren gebildet,
+// die später überschrieben und mit einem Jump ans Ende versehen wird.
+begin
+  WeekdayDisplay.vecupd_start:= VE_CurrentVector;
+  UpdateWeekdayPos;  // Positionsdaten eintragen
+  WeekdayDisplay.vecupd_redraw:= VE_CurrentVector;
+  VE_SetBeamInt(VE_beamlow);
+  VE_DrawStringAt_b(-34, 0, '8888888888', 35);  // mögl. viele Vektoren
+  VE_UploadVals(ve_nop, 0, 0);
+  WeekdayDisplay.vecupd_end:= VE_CurrentVector;
+  VE_SetOffset_b(0, 0);
+  VE_SetRotationDeg(0);
+  VE_UploadVals(ve_set_scale, 1024, 1024);  // wurde geändert
+  VE_UploadVals(ve_set_rot_mid, 0, 0);
+end;
+
+// #############################################################################
+
+procedure SendButton(button: Byte; state: Boolean);
+var btn_temp: Byte;
+begin
+  btn_temp:= 0;
+  incl(btn_temp, button);
+  SPI_LoaderCmd(lc_port1, Integer(btn_temp));
+end;
+
+procedure SendButtonPulse(button: Byte; on_time: Word);
+var btn_temp: Byte;
+begin
+  btn_temp:= 0;
+  incl(btn_temp, button);
+  SPI_LoaderCmd(lc_port1, Integer(btn_temp));
+  mdelay(on_time);
+  SPI_LoaderCmd(lc_port1, 0);
+  mdelay(50);
+end;
+
+procedure RestoreDamage;
+begin
+  RotatingText.damage_level:= 0;
+  UpdateRotatingText;
+  Logo.damage_level:= 0;
+  UpdateLogo;
+  DateDisplay.damage_level:= 0;
+  UpdateDatePos;
+  WeekdayDisplay.damage_level:= 0;
+  UpdateWeekdayPos;
+end;
+
+procedure DefaultVectors;
+begin
+  VE_SetBeamInt(VE_beamoff);
+  VE_UploadVals(ve_set_scale, 1024, 1024);
+  VE_UploadVals(ve_set_offs, 0,0);
+  VE_UploadVals(ve_set_rot_deg, 0, 0);
+  VE_UploadVals(ve_set_rot_mid, 0, 0);
+  VE_UploadVals(ve_set_speed, 16, 0);
+end;
+
+Procedure AddTimeDigits;
+var my_hour: Byte;
+begin
+  DefaultVectors;
+  VE_SetBeamInt(VE_beamhi);
+  my_hour:= Hour;
+  if PM and (not H24mode) then
+    my_hour:= (Hour + 12);
+  endif;
+  VE_DrawStringAt_b(-120, -105, ByteToStr(my_hour:2:'0') + ':' + ByteToStr(Minute:2:'0'), 50);
+end;
+
+// #############################################################################
+// ###                         SPLASH SEQUENCE                               ###
+// #############################################################################
+
+function SplashSequence1: Boolean;
+// liefert TRUE wenn beendet
+begin
+  // Vektor-Routinen einmal komplett uploaden und Einsprungadressen merken
+  case SequState of
+  s_sequ_init:
+    if not VectorLoad('LOGO_' + char(LogoNr + 48) + '.VEC', 0) then
+      SequState:= s_sequ_end;
+      return(true);
+    endif;
+    IncToLimWrap(LogoNr, 9, 0);
+    // VE_DrawLargeROMvecArr(vec_rom_ptr, 100); // fest eingebaut
+    Animation.vecupd_start:= VE_CurrentVector;
+    VE_UploadVals(ve_stopwait, 0, 0);
+    VE_UploadBegin(5);
+    VE_UploadVals(ve_set_speed, 2500, 0);     // #5
+    VE_SingleRun(0); // Triggern, nur ein Durchlauf
+    repeat
+    until (not VEC_DONE);  // Auf Start der VE warten
+    SequState:= s_sequ_1;
+    |
+  s_sequ_1:
+    if GetButtonPort then
+      SequState:= s_sequ_end;
+      return(true);
+    endif;
+    if VEC_DONE then
+      VE_Stop;
+      VE_UploadBegin(5); // ab Adresse 5
+      VE_UploadVals(ve_set_speed, 16, 0);        // #5
+
+      VE_UploadBegin(Animation.vecupd_start); // ab Ende
+      VE_UploadVals(ve_set_scale, 1024, 1024);
+      VE_UploadVals(ve_set_rot_deg, 0, 0);
+      VE_SetBeamInt(VE_beammid);
+      CreateUfo;
+      CreateShoot;
+      CreateFlare;
+      AddTimeDigits;
+      Animation.vecupd_start:= VE_CurrentVector;
+      VE_UploadVals(ve_stopwait, 0, 0);
+      UpdateUfo;  // nicht anzeigen
+      UpdateShoot;
+      UpdateFlare;
+      VE_Run(0);
+      Animation.timecount:= 50;
+      SequState:= s_sequ_2;
+    endif;
+    |
+  s_sequ_2:
+    if not dectolim(Animation.timecount, 0) then
+      Ufo.visible:= true;
+      Ufo.x_pos:= -2000;
+      Ufo.y_pos:= 800;
+      Ufo.x_inc:= 12;
+      Ufo.y_inc:= (RandomInt and 7) - 3;
+      Ufo.timecount:= 1;  // keine autom. Aktionen
+      UpdateUfo;
+      UpdateShoot;
+      UpdateFlare;
+      Animation.timecount:= 150;
+      SequState:= s_sequ_3;
+    endif;
+    |
+  s_sequ_3:
+    // Ufo schießt
+    if Animation.timecount = 75 then
+      Shoot.trigger:= true;
+      Shoot.x_pos:= 2000;
+      Shoot.y_pos:= -1500;
+    endif;
+    Ufo.timecount:= 1;  // keine autom. Aktionen
+    Flare.Timer:= 150;
+
+    UpdateUfo;
+    UpdateShoot;
+    UpdateFlare;
+    if not dectolim(Animation.timecount, 0) then
+      Animation.x_scale:= 1024;
+      Animation.y_scale:= 1024;
+      Animation.rotation:= 0;
+      Animation.timecount:= 256;
+      SequState:= s_sequ_4;
+    endif;
+    |
+  s_sequ_4:
+    Ufo.timecount:= 1;  // keine autom. Aktionen
+    UpdateUfo;
+    UpdateShoot;
+    UpdateFlare;
+    VE_UploadBegin(1); // ab Adresse 1
+    VE_UploadVals(ve_set_scale, Animation.x_scale, Animation.y_scale); // #1
+    VE_UploadVals(ve_set_offs, 0,0);          // #2
+    VE_UploadVals(ve_set_rot_deg, Animation.rotation, 0);
+    Animation.x_scale:= mulDivInt(Animation.x_scale, 985, 1000);
+    dec(Animation.x_scale, 2);
+    Animation.y_scale:= mulDivInt(Animation.y_scale, 99, 100);
+    dec(Animation.y_scale);
+    inc(Animation.rotation, 5);
+    if Animation.y_scale < 20 then
+      SequState:= s_sequ_end;
+      VE_Stop;
+      return(true);
+    endif;
+    |
+  endcase;
+  return(false);
+end;
+
+function SplashSequence2: Boolean;
+// liefert TRUE wenn beendet
+begin
+  // Vektor-Routinen einmal komplett uploaden und Einsprungadressen merken
+  case SequState of
+  s_sequ_init:
+    if not VectorLoad('LOGO_' + char(LogoNr + 48) + '.VEC', 0) then
+      SequState:= s_sequ_end;
+      return(true);
+    endif;
+
+    AddTimeDigits;
+    IncToLimWrap(LogoNr, 9, 0);
+    VE_UploadVals(ve_jump, 0, 0);
+    Animation.timecount:= 256;
+    Animation.x_scale:= 40;
+    Animation.y_scale:= 40;
+    VE_UploadBegin(1); // ab Adresse 1
+    VE_UploadVals(ve_set_scale, Animation.x_scale, Animation.y_scale);
+    VE_Run(0);
+    SequState:= s_sequ_1;
+    |
+  s_sequ_1:
+    VE_UploadBegin(1); // ab Adresse 1
+    VE_UploadVals(ve_set_scale, Animation.x_scale, Animation.y_scale);
+    Animation.x_scale:= mulDivInt(Animation.x_scale, 104, 100);
+    Animation.y_scale:= mulDivInt(Animation.y_scale, 104, 100);
+    if Animation.x_scale > 1024 then
+      SequState:= s_sequ_2;
+      Animation.timecount:= 100;
+      Animation.x_scale:= 1024;
+      Animation.y_scale:= 1024;
+    endif;
+    |
+  s_sequ_2:
+    if not dectolim(Animation.timecount, 0) then
+      SequState:= s_sequ_3;
+      Animation.rotation:= 0;
+    endif;
+    |
+  s_sequ_3:
+    VE_UploadBegin(1); // ab Adresse 0
+    // VE_SetBeamInt(VE_beamlow);
+    VE_UploadVals(ve_set_scale, Animation.x_scale, Animation.y_scale); // #1
+    VE_UploadVals(ve_set_offs, 0,0);          // #2
+    VE_UploadVals(ve_set_rot_deg, Animation.rotation, 0);
+    Animation.y_scale:= mulDivInt(Animation.y_scale, 97, 100);
+    if Animation.y_scale < 80 then
+      Animation.x_scale:= mulDivInt(Animation.x_scale, 90, 100);
+    endif;
+    if Animation.x_scale < 20 then
+      SequState:= s_sequ_4;
+      Animation.timecount:= 20;
+    endif;
+    |
+  s_sequ_4:
+    if not dectolim(Animation.timecount, 0) then
+      SequState:= s_sequ_end;
+      VE_Stop;
+      return(true);
+    endif;
+    |
+  endcase;
+  return(false);
+end;
+
+Procedure SpashScreen;
+begin
+  VectorLoad('SPLASH.VEC', 0);
+  AddTimeDigits;
+  VE_UploadVals(ve_stopwait, 0, 0);
+  VE_Run(0);
+end;
+
+// #############################################################################
+// ###                    ´        C L O C K                                 ###
+// #############################################################################
+
+
+procedure CreateClock;
+begin
+  // vorhandene Objekte können während des Betriebs überschrieben werden
+  // Vektor-Routinen einmal komplett uploaden und Einsprungadressen merken
+  VE_Stop;
+  VE_UploadBegin(0); // ab Adresse 0
+  DefaultVectors;
+
+  CreateClockFace;
+  CreateSecondsHand;
+  CreateMinutesHand;
+  CreateHoursHand;
+  CreateDate;
+  CreateWeekday;
+  CreateRotatingText;
+  CreatePendulum;
+
+  CreateLogo;
+  CreateUfo;
+  CreateShoot;
+  CreateFlare;
+  VE_UploadVals(ve_stopwait, 0, 0);
+
+  UpdateRotatingText;
+  UpdatePendulum;
+  UpdateSecondsHand;
+  UpdateMinutesHand;
+  UpdateHoursHand;
+  UpdateDatePos;
+  UpdateDateString;
+  UpdateWeekdayPos;
+  UpdateWeekday;
+  VE_Run(0);
+end;
+
+// #############################################################################
+// ###                    ´        MAIN LOOP                                 ###
+// #############################################################################
+
+procedure InitScopeClock;
+begin
+  // InitPorts;
+  // InitSPI;
+  // EnableInts;
+
+  DS_Init(false);
+
+  DestDayCount:= EE_DestDayCount; // ab 1.1.2000
+  DaysLeft:= DestDayCount - CalcDays(Day, Month, Year);
+
+  For i:= 0 to 59 do
+    n:= (i + 45) mod 60;
+    m:= c_sinusArr[i];
+    m:= muldivInt8(m, 85, 100);
+    x_arrTicksOuter[i]:= m;
+    y_arrTicksOuter[n]:= m;
+    if i mod 5 = 0 then
+      m:= muldivInt8(m, 90, 100);
+    else
+      m:= muldivInt8(m,95, 100);
+    endif;
+    m:= c_sinusArr[i];
+  endfor;
+  //InterpolateMinutes;
+  if (Minute <> 0) then
+    RandomSeed(Word(Minute shl 8) + Word(Second));
+  else
+    RandomSeed($2051);
+  endif;
+  RandomInt:= Integer(Random and $7FFF);
+  NewRandomEndpos(Shoot);
+  RandomInt:= Integer(Random and $7FFF);
+  NewRandomEndpos(Ufo);
+  SendByteToFPGA($80, 1); // Q1 Bit 7
+
+  VE_InitVars;
+  VE_Stop;
+
+  LogoNr:= 0;
+  State:= s_initclock;
+  InitScopeClockDone:= true;
+end;
+
+procedure ShowLogoFiles;
+begin
+  VE_Stop;
+  for LogoNr:= 0 to 9 do
+    if not VectorLoad('LOGO_' + char(LogoNr + 48) + '.VEC', 0) then
+      break;
+    endif;
+    VE_UploadVals(ve_stopwait, 0, 0);
+    VE_Run(0);
+    mdelay(200);
+  endfor;
+  SpashScreen;
+  mdelay(200);
+  LogoNr:= 0;
+  State:= s_initclock;
+end;
+
+procedure IncDecByte(var value: Byte; change, limit: Int8);
+begin
+  if change > 0 then
+    incToLim(value, limit);
+  endif;
+  if change < 0 then
+    decToLim(value, 0);
+  endif;
+end;
+
+procedure IncDecInt(var value: Integer; change: Int8; limit: Integer);
+begin
+  if change > 0 then
+    incToLim(value, limit);
+  endif;
+  if change < 0 then
+    decToLim(value, 0);
+  endif;
+end;
+
+
+procedure SetItemVal(set_mode: t_setmode; change: Int8);
+var
+  my_hour: Byte;
+begin
+  write(SerOut,'/ SetMode: ' + ByteToStr(Byte(set_mode)));
+  write(SerOut,', Change: ' + IntToStr(change));
+  SerCRLF;
+  VE_Stop;
+  VE_UploadBegin(0); // ab Adresse 0
+  DefaultVectors;
+  VE_SetBeamInt(VE_beammid);
+  VE_DrawStringAt_b(-100, 40,'SETTINGS', 100);
+  VE_SetBeamInt(VE_beamhi);
+  if (set_mode <> s_run) then
+    DS_GetTime(Second, Minute, Hour, PM);
+    DS_GetDate(Weekday, Day, Month, Year);
+  endif;
+  case set_mode of
+  s_hour:
+    my_hour:= Hour;
+    if PM and (not H24mode) then
+      my_hour:= (Hour + 12);
+    endif;
+    IncDecByte(my_hour, change, 23);
+    VE_DrawStringAt_b(-100, 0,'HOUR (24H): ' + ByteToStr(my_hour), 80);
+    PM:= my_hour > 12;
+    if PM and (not H24mode) then
+      Hour:= my_hour - 12;
+    else
+      Hour:= my_hour;
+    endif;
+    SetRTCtime;
+    DS_SetTime(Second, Minute, Hour, PM);
+    |
+  s_minute:
+    IncDecByte(Minute, change, 59);
+    VE_DrawStringAt_b(-100, 0,'MINUTE: ' + ByteToStr(Minute), 80);
+    SetRTCtime;
+    DS_SetTime(Second, Minute, Hour, PM);
+    |
+  s_second:
+    IncDecByte(Second, change, 59);
+    VE_DrawStringAt_b(-100, 0,'SECOND: ' + ByteToStr(Second), 80);
+    SetRTCtime;
+    DS_SetTime(Second, Minute, Hour, PM);
+    |
+  s_weekday:
+    IncDecByte(Weekday, change, 6);
+    VE_DrawStringAt_b(-100, 0, c_WeekdayArr[Weekday], 80);
+    SetRTCdate;
+    DS_SetDate(Weekday, Day, Month, Year);
+    |
+  s_day:
+    IncDecByte(Day, change, c_daypermonthArr[Month]);
+     VE_DrawStringAt_b(-100, 0,'DAY: ' + ByteToStr(Day), 80);
+    SetRTCdate;
+    DS_SetDate(Weekday, Day, Month, Year);
+    |
+  s_month:
+    IncDecByte(Month, change, 12);
+    VE_DrawStringAt_b(-100, 0,'MONTH: ' + ByteToStr(Month), 80);
+    SetRTCdate;
+    DS_SetDate(Weekday, Day, Month, Year);
+    |
+  s_year:
+    IncDecByte(Year, change, 99);
+    VE_DrawStringAt_b(-100, 0,'YEAR: ' + ByteToStr(Year), 80);
+    SetRTCdate;
+    DS_SetDate(Weekday, Day, Month, Year);
+    |
+  s_daysleft:
+    DestDayCount:= EE_DestDayCount; // ab 1.1.2000
+    DaysLeft:= DestDayCount - CalcDays(Day, Month, Year);
+    IncDecInt(DaysLeft, change, 9999);
+    DestDayCount:= CalcDays(Day, Month, Year) + DaysLeft;
+    EE_DestDayCount:= DestDayCount;
+    VE_DrawStringAt_b(-100, 0,'DAYS LEFT: ' + IntToStr(DaysLeft), 80);
+    |
+  endcase;
+  VE_UploadVals(ve_stopwait, 0, 0);
+  VE_Run(0);
+end;
+
+
+procedure HandleScopeClock;
+begin
+  // Bei Bedarf (Semaphore gesetzt) Teile des Vector-RAMs überschreiben
+  if not InitScopeClockDone then
+    return;
+  endif;
+  if InvertZ then
+    invert_z_mask:= $0002;
+  else
+    invert_z_mask:= 0;
+  endif;
+
+  repeat
+    // Buttons (Bit-Nr.) ButtonPort_0:
+    // 0-Fire, 1=Rturn, 2=Coin, 3=Lturn, 4=Thrust, 5=Start, 6=Shield
+    // Buttons (Bit-Nr.) ButtonPort_1:
+    // 0-DEC, 1-INC, 2-Set H, M, S, Weekday, Day, Month, Year, DaysLeft, Run
+    // 3-END SetMode
+    if GetButtonPort then
+      if ButtonPort_0 <> 0 then
+        SPI_LoaderCmd(lc_port0, invert_z_mask or 0); // Asteroids aktiv
+        ActiveCounter:= 20;
+        State:= s_asteroids;
+      endif;
+    endif;
+    // Buttons an Asteroids übermitteln
+    if State = s_asteroids then
+      SPI_LoaderCmd(lc_port1, Integer(ButtonPort_0)); // LSB
+      if ButtonPort_1 <> 0 then
+        ActiveCounter:= 0;
+        State:= s_initclock;
+        write(SerOut,'/ End Game');
+        SerCRLF;
+        SPI_LoaderCmd(lc_port0, invert_z_mask or 1); // Clock aktiv
+      endif;
+    endif;
+
+    if Bit(ButtonPort_1, 2) then
+      IncToLimWrap(SetMode, s_second, s_run);
+      SetItemVal(SetMode, 0);
+      State:= s_initclock;
+      WaitButtonRelease;
+    endif;
+    if (SetMode <> s_run) then
+      if Bit(ButtonPort_1, 0) then
+        SetItemVal(SetMode, -1);
+        WaitButtonRelease;
+      endif;
+      if Bit(ButtonPort_1, 1) then
+        SetItemVal(SetMode, 1);
+        WaitButtonRelease;
+      endif;
+      if Bit(ButtonPort_1, 3) then
+        SetMode:= s_run;
+        State:= s_initclock;
+        write(SerOut,'/ SetMode End');
+        SerCRLF;
+      endif;
+    endif;
+    if Bit(ButtonPort_1, 2) then
+      IncToLimWrap(SetMode, s_daysleft, s_run);
+      WaitButtonRelease;
+    endif;
+    mdelay(1);
+  until SysTickSema;
+
+  SysTickSema:= false;
+  RandomInt:= Integer(Random and $7FFF);
+
+
+
+  Inc(Sec100);
+  if SecondSema then
+    Sec100:= 0;
+  endif;
+
+  case State of
+  s_initclock:
+    if SetMode = s_run then
+      VE_Stop;
+      CreateClock;
+      RestoreDamage;
+      ActiveCounter:= 15;
+      State:= s_updateclock;
+    endif;
+    |
+  s_updateclock:
+    UpdatePendulum;
+    UpdateUfo;
+    UpdateShoot;
+    UpdateFlare;
+    if RotatingText.damage_level > 0 then
+      UpdateRotatingText;
+    endif;
+    if Logo.damage_level > 0 then
+      UpdateLogo;
+    endif;
+    if DateDisplay.damage_level > 0 then
+      UpdateDatePos;
+    endif;
+    if WeekdayDisplay.damage_level > 0 then
+      UpdateWeekdayPos;
+    endif;
+
+    if SecondSema then
+      DS_GetTime(Second, Minute, Hour, PM);
+      SetRTCtime;
+      Hour:= Hour mod 12;
+      Sec100:= 0;
+      Pendulum.rotation:= 401;
+      UpdateSecondsHand;
+      UpdateMinutesHand;
+      SPI_LoaderCmd(lc_port0, invert_z_mask or 1); // Clock aktiv
+      if not dectoLim(ActiveCounter, 0) then
+        if not (Ufo.visible or Shoot.visible or Flare.visible) then
+          // Kein Ufo aktiv, Umschalten
+          State:= s_initanim_1;
+        endif;
+      endif;
+      if ((Second mod 5) = 0) and ((RandomInt and 3) = 0) then
+        Ufo.trigger:= true;
+      endif;
+    endif;
+
+    if MinuteSema then
+      UpdateSecondsHand;
+      UpdateMinutesHand;
+      UpdateHoursHand;
+    endif;
+
+    if HourSema then
+      DS_GetDate(Weekday, Day, Month, Year);
+      if Weekday > 6 then
+        Weekday:= 0;
+        DS_SetDate(Weekday, Day, Month, Year);
+        SetRTCdate;
+      endif;
+      DaysLeft:= DestDayCount - CalcDays(Day, Month, Year);
+      UpdateHoursHand;
+      UpdateDateString;
+      UpdateWeekday;
+    endif;
+    |
+  s_initanim_1:
+    SequState:= s_sequ_init;
+    State:= s_updateanim_1;
+    |
+  s_updateanim_1:
+    if SplashSequence1 then // beendet?
+      State:= s_initanim_2;
+    endif;
+    SPI_LoaderCmd(lc_port0, invert_z_mask or 1); // Animation 1 aktiv
+    |
+  s_initanim_2:
+    SequState:= s_sequ_init;
+    State:= s_updateanim_2;
+    |
+  s_updateanim_2:
+    if SplashSequence2 then // beendet?
+      State:= s_initmsgscreen;
+    endif;
+    |
+  s_initmsgscreen:
+    ActiveCounter:= 1;
+    SpashScreen;
+    State:= s_msgscreen;
+    |
+  s_msgscreen:
+    if SecondSema then
+      if (not dectoLim(ActiveCounter, 0)) then
+        State:= s_initasteroids;
+      endif;
+    endif;
+    |
+  s_initasteroids:
+    SPI_LoaderCmd(lc_port0, invert_z_mask or 0); // Asteroids aktiv
+    ActiveCounter:= 5;
+    State:= s_asteroids;
+    |
+  s_asteroids:
+    if SecondSema then
+      if (not dectoLim(ActiveCounter, 0)) then
+        State:= s_initclock;
+      endif;
+    endif;
+    |
+  endcase;
+
+  SecondSema:= false;
+  MinuteSema:= false;
+  HourSema:= false;
+
+  //LED:= Bit(Second, 0);
+end;
+
+end scope_clock.
+

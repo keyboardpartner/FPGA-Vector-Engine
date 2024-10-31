@@ -1,0 +1,1922 @@
+Functions (alphabetic listing)
+==============================
+
+Name                                   Defined in File
+-------------------------------------  ---------------
+$_Main                                 E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_BytesToRecords                    E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_BytesToRecordsL                   E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_CheckDirName                      E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_CleanCluster                      E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_ClusterToSector                   E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_CompareNames                      E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_EraseBlocks                       E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_ERDI                              E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_ERDID                             E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_FNameToNameExt                    E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_FreeChain                         E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_FsInfo                            E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_GetDirFatSector                   E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_GetDirItem                        E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_GetFAT                            E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_GetFATItem                        E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_GetFileFCluster                   E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_GetFirstFreeFATItem               E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_GetFNameSBufNE                    E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_GetFreeFATItem                    E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_GetFreeHandle                     E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_InitDirItem                       E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_InitFileSector                    E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_LoadSector                        E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_multiClearBlock                   E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_multiReadBlock                    E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_NameExtToFName                    E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_NextDirItem                       E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_NextFileSectorRd                  E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_NextFileSectorWr                  E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_PathExpand                        E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_readStart                         E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_readStop                          E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_ReadText                          E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_RecordsToBytes                    E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_RecordsToBytesL                   E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_SectorToCluster                   E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_SetFAT                            E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_SETFDI                            E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_SETFDID                           E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_SetFreeFATItem                    E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_SetFreeHandle                     E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_WriteSector                       E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_writeStart                        E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_writeStop                         E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16_WriteText                         E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_F16GetSectCount                       E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_loadFileDataFromCluster               E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_PowerOf                               E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_SDwaitReady                           E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+_SDwaitReady2                          E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+AppearFileAnimation                    scope_clock.pas
+CalcDays                               rtc_maxim.pas
+CheckCard                              files.pas
+CheckDamage                            scope_clock.pas
+CheckSer                               parser.pas
+Chores                                 parser.pas
+ChoresDelay                            parser.pas
+Cmd2Index                              parser.pas
+CreateClock                            scope_clock.pas
+CreateClockFace                        scope_clock.pas
+CreateDate                             scope_clock.pas
+CreateHoursHand                        scope_clock.pas
+CreateLogo                             scope_clock.pas
+CreateMinutesHand                      scope_clock.pas
+CreatePendulum                         scope_clock.pas
+CreateRotatingText                     scope_clock.pas
+CreateSecondsHand                      scope_clock.pas
+CreateTimeDigits                       scope_clock.pas
+CreateUfoAnimation                     scope_clock.pas
+CreateWeekday                          scope_clock.pas
+DateTimeToDOS                          global_vars.pas
+DateToParamStr                         global_vars.pas
+DestroyFileAnimation                   scope_clock.pas
+DS_GetDate                             rtc_maxim.pas
+DS_GetTime                             rtc_maxim.pas
+DS_Init                                rtc_maxim.pas
+DS_readRAM                             rtc_maxim.pas
+DS_SetDate                             rtc_maxim.pas
+DS_SetTime                             rtc_maxim.pas
+DS_writeRAM                            rtc_maxim.pas
+F16_BlockRandomWrite                   E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_BlockRead                          E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_BlockWrite                         E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_ChangeDir                          E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_CheckHandle                        E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_CreateDir                          E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_DateToStr                          E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_DirGetDate                         E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_DiskFormat                         E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_DiskInit                           E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_DiskReset                          E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_EndOfFile                          E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_FileAppend                         E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_FileAssign                         E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_FileClose                          E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_FileCopy                           E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_FileCreate                         E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_FileDelete                         E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_FileExist                          E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_FileGetAttr                        E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_FileGetDate                        E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_FilePos                            E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_FileRename                         E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_FileReset                          E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_FileRewrite                        E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_FileSeek                           E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_FileSetAttr                        E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_FileSetDate                        E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_FileSize                           E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_FileSizeH                          E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_FindFirst                          E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_FindNext                           E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_FlushBufSec                        E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_GetDiskFree                        E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_GetDiskFree16                      E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_GetDiskFree32                      E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_GetDiskUsed                        E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_GetUsedHandles                     E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_PathExist                          E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_PathExpand                         E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_RandomWrite                        E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_ReadSector                         E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_RemoveDir                          E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_StrToDate                          E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_StrToTime                          E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_TimeToStr                          E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+F16_WriteSector                        E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+FileLoad                               files.pas
+FPGAload                               files.pas
+freeMemoryUpdate                       E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+GetButtonPort                          ports.pas
+GetRTCdate                             rtc_maxim.pas
+GetRTCtime                             rtc_maxim.pas
+HandleScopeClock                       scope_clock.pas
+IncDecByte                             scope_clock.pas
+IncDecInt                              scope_clock.pas
+InitAll                                E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+InitButtonPort                         ports.pas
+InitScopeClock                         scope_clock.pas
+InitSPI                                fpga_if.pas
+InitVars                               global_vars.pas
+IsClusEOF                              E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+IsClusRES                              E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+ModuloMask                             E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+new_object_slides                      scope_clock.pas
+NewRandomIncSlow                       scope_clock.pas
+NewRandomIncToMid                      scope_clock.pas
+NewRandomPos                           scope_clock.pas
+onSysTick                              scope_clock.pas
+ParamIntToHex                          parser.pas
+ParamIntToStr                          parser.pas
+ParamLongToHex                         parser.pas
+ParamLongToStr                         parser.pas
+ParamStr2Param                         parser.pas
+ParseExtract                           parser.pas
+ParseGetParam                          parser.pas
+ParseSetParam                          parser.pas
+ParseSubCh                             parser.pas
+readCSD                                E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+readRegister                           E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+ReceiveBRAM16binary                    files.pas
+ReceiveFPGA                            fpga_if.pas
+ReceiveFPGAbinary                      files.pas
+RestoreDamage                          scope_clock.pas
+RTCtickHour                            scope_clock.pas
+RTCtickMinute                          scope_clock.pas
+RTCtickSecond                          scope_clock.pas
+send_cmd                               E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+SendButton                             scope_clock.pas
+SendButtonPulse                        scope_clock.pas
+SendByteToFPGA                         fpga_if.pas
+SendFPGA16                             fpga_if.pas
+SendFPGA32                             fpga_if.pas
+SendFPGA8                              fpga_if.pas
+SendFPGAreg                            fpga_if.pas
+SendLongToFPGA                         fpga_if.pas
+SendWordToFPGA                         fpga_if.pas
+SerCRLF                                global_vars.pas
+serDummy                               E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+SerPrompt                              parser.pas
+SetItemVal                             scope_clock.pas
+SetRTCdate                             rtc_maxim.pas
+SetRTCtime                             rtc_maxim.pas
+SetSectOfs                             E:\DROPBOX\ASTEROIDSCLOCK\AVR_644\FPGA.pas
+ShiftFPGAconf                          fpga_if.pas
+ShiftFPGAconfblock                     fpga_if.pas
+ShowLogoFiles                          files.pas
+ShowTestScreen                         files.pas
+SkipObjectIfInvisible                  scope_clock.pas
+SlideInFileAnimation                   scope_clock.pas
+SPI_GetCurrentVec                      vectorengine_spi.pas
+SPI_LoaderBegin                        vectorengine_spi.pas
+SPI_LoaderCmd                          vectorengine_spi.pas
+SPI_LoaderWriteInc                     vectorengine_spi.pas
+SPI_SetDACsDirect                      vectorengine_spi.pas
+SplashScreen                           scope_clock.pas
+SplashSequence1                        scope_clock.pas
+SplashSequence2                        scope_clock.pas
+SplashSequence3                        scope_clock.pas
+TimeToParamStr                         global_vars.pas
+UpdateAllFileObjects                   scope_clock.pas
+UpdateDamage                           scope_clock.pas
+UpdateDatePos                          scope_clock.pas
+UpdateDateString                       scope_clock.pas
+UpdateFileObject                       scope_clock.pas
+UpdateFlare                            scope_clock.pas
+UpdateHoursHand                        scope_clock.pas
+UpdateLogo                             scope_clock.pas
+UpdateMinutesHand                      scope_clock.pas
+UpdatePendulum                         scope_clock.pas
+UpdateRotatingText                     scope_clock.pas
+UpdateSecondsHand                      scope_clock.pas
+UpdateShoot                            scope_clock.pas
+UpdateUfo                              scope_clock.pas
+UpdateUfoAnimation                     scope_clock.pas
+UpdateWeekday                          scope_clock.pas
+UpdateWeekdayPos                       scope_clock.pas
+VE_CreateAllCharVecs                   vectorengine_spi.pas
+VE_DefaultVectors                      vectorengine_spi.pas
+VE_DrawCharAt_b                        vectorengine_spi.pas
+VE_DrawCharRelAt_b                     vectorengine_spi.pas
+VE_DrawCircleAt_b                      vectorengine_spi.pas
+VE_DrawCircleSegmentAt                 vectorengine_spi.pas
+VE_DrawCircleSegmentAt_b               vectorengine_spi.pas
+VE_DrawLargeROMvecArr                  vectorengine_spi.pas
+VE_DrawLineTo_b                        vectorengine_spi.pas
+VE_DrawLineToRel_b                     vectorengine_spi.pas
+VE_DrawPinPointAt                      vectorengine_spi.pas
+VE_DrawPinPointAt_b                    vectorengine_spi.pas
+VE_DrawPointAt                         vectorengine_spi.pas
+VE_DrawPointAt_b                       vectorengine_spi.pas
+VE_DrawROMvecArrRel                    vectorengine_spi.pas
+VE_DrawStringAt_b                      vectorengine_spi.pas
+VE_DrawVecArrRel_b                     vectorengine_spi.pas
+VE_InitVars                            vectorengine_spi.pas
+VE_MoveTo_b                            vectorengine_spi.pas
+VE_MoveToRel_b                         vectorengine_spi.pas
+VE_Run                                 vectorengine_spi.pas
+VE_SetBeamInt                          vectorengine_spi.pas
+VE_SetOffset_b                         vectorengine_spi.pas
+VE_SetRotationDeg                      vectorengine_spi.pas
+VE_SetRotationMid_b                    vectorengine_spi.pas
+VE_SingleRun                           vectorengine_spi.pas
+VE_Stop                                vectorengine_spi.pas
+VE_UploadBegin                         vectorengine_spi.pas
+VE_UploadLong                          vectorengine_spi.pas
+VE_UploadVals                          vectorengine_spi.pas
+VectorLoad                             files.pas
+WaitButtonRelease                      ports.pas
+WriteChPrefix                          parser.pas
+WriteIntSer                            parser.pas
+WriteParamByteSer                      parser.pas
+WriteParamHexSer                       parser.pas
+WriteParamIntSer                       parser.pas
+WriteParamLongSer                      parser.pas
+WriteParamStrSer                       parser.pas
+WriteSerInp                            parser.pas
+
+Function Call Analysis
+======================
+
+$_Main
+->InitAll
+--->InitVars
+--->SerCRLF
+
+_F16_BytesToRecords
+
+_F16_BytesToRecordsL (*** Removed by Optimiser ***)
+
+_F16_CheckDirName (*** Removed by Optimiser ***)
+
+_F16_CleanCluster
+
+_F16_ClusterToSector
+
+_F16_CompareNames
+
+_F16_EraseBlocks (*** Removed by Optimiser ***)
+
+_F16_ERDI (*** Removed by Optimiser ***)
+
+_F16_ERDID (*** Removed by Optimiser ***)
+
+_F16_FNameToNameExt
+
+_F16_FreeChain
+
+_F16_GetDirFatSector
+
+_F16_GetDirItem
+
+_F16_GetFATItem
+
+_F16_GetFileFCluster
+
+_F16_GetFirstFreeFATItem
+
+_F16_GetFNameSBufNE
+
+_F16_GetFreeFATItem
+->_F16_GetFAT
+
+_F16_GetFreeHandle (*** Removed by Optimiser ***)
+
+_F16_InitDirItem
+
+_F16_InitFileSector
+
+_F16_LoadSector
+
+_F16_multiClearBlock
+
+_F16_multiReadBlock
+
+_F16_NameExtToFName
+
+_F16_NextFileSectorRd
+
+_F16_NextFileSectorWr (*** Removed by Optimiser ***)
+
+_F16_PathExpand
+
+_F16_readStart
+
+_F16_readStop
+
+_F16_ReadText (*** Removed by Optimiser ***)
+
+_F16_RecordsToBytes
+
+_F16_RecordsToBytesL (*** Removed by Optimiser ***)
+
+_F16_SectorToCluster
+
+_F16_SetFAT
+
+_F16_SETFDI
+
+_F16_SETFDID (*** Removed by Optimiser ***)
+
+_F16_SetFreeFATItem
+
+_F16_SetFreeHandle (*** Removed by Optimiser ***)
+
+_F16_WriteSector
+
+_F16_writeStart
+
+_F16_writeStop (*** Removed by Optimiser ***)
+
+_F16_WriteText (*** Removed by Optimiser ***)
+
+_F16GetSectCount (*** Removed by Optimiser ***)
+
+_loadFileDataFromCluster
+
+_PowerOf
+
+_SDwaitReady
+
+_SDwaitReady2 (*** Removed by Optimiser ***)
+
+AppearFileAnimation
+
+CalcDays
+
+CheckCard
+
+CheckDamage
+
+CheckSer
+
+Chores
+
+ChoresDelay
+
+Cmd2Index
+
+CreateClock
+->VE_Stop
+
+CreateClockFace
+
+CreateDate
+
+CreateHoursHand
+->UpdateHoursHand
+
+CreateLogo
+->UpdateLogo
+
+CreateMinutesHand
+->UpdateMinutesHand
+
+CreatePendulum
+->UpdatePendulum
+
+CreateRotatingText
+
+CreateSecondsHand
+->UpdateSecondsHand
+
+CreateTimeDigits
+
+CreateUfoAnimation
+->SPI_GetCurrentVec
+
+CreateWeekday
+->UpdateWeekdayPos
+
+DateTimeToDOS (*** Removed by Optimiser ***)
+
+DateToParamStr (*** Removed by Optimiser ***)
+
+DestroyFileAnimation
+
+DS_GetDate
+
+DS_GetTime
+
+DS_Init
+
+DS_readRAM (*** Removed by Optimiser ***)
+
+DS_SetDate
+
+DS_SetTime
+
+DS_writeRAM (*** Removed by Optimiser ***)
+
+F16_BlockRandomWrite (*** Removed by Optimiser ***)
+
+F16_BlockRead
+
+F16_BlockWrite (*** Removed by Optimiser ***)
+
+F16_ChangeDir (*** Removed by Optimiser ***)
+
+F16_CheckHandle (*** Removed by Optimiser ***)
+
+F16_CreateDir (*** Removed by Optimiser ***)
+
+F16_DateToStr (*** Removed by Optimiser ***)
+
+F16_DirGetDate (*** Removed by Optimiser ***)
+
+F16_DiskFormat (*** Removed by Optimiser ***)
+
+F16_DiskInit
+
+F16_DiskReset
+
+F16_EndOfFile
+
+F16_FileAppend (*** Removed by Optimiser ***)
+
+F16_FileAssign
+
+F16_FileClose
+
+F16_FileCopy (*** Removed by Optimiser ***)
+
+F16_FileCreate (*** Removed by Optimiser ***)
+
+F16_FileDelete (*** Removed by Optimiser ***)
+
+F16_FileExist
+
+F16_FileGetAttr (*** Removed by Optimiser ***)
+
+F16_FileGetDate (*** Removed by Optimiser ***)
+
+F16_FilePos (*** Removed by Optimiser ***)
+
+F16_FileRename (*** Removed by Optimiser ***)
+
+F16_FileReset
+
+F16_FileRewrite
+
+F16_FileSeek (*** Removed by Optimiser ***)
+
+F16_FileSetAttr (*** Removed by Optimiser ***)
+
+F16_FileSetDate (*** Removed by Optimiser ***)
+
+F16_FileSize (*** Removed by Optimiser ***)
+
+F16_FileSizeH (*** Removed by Optimiser ***)
+
+F16_FindFirst
+
+F16_FindNext (*** Removed by Optimiser ***)
+->_F16_NextDirItem
+
+F16_FlushBufSec
+
+F16_GetDiskFree
+
+F16_GetDiskFree16
+
+F16_GetDiskFree32
+
+F16_GetDiskUsed (*** Removed by Optimiser ***)
+
+F16_GetUsedHandles (*** Removed by Optimiser ***)
+
+F16_PathExist (*** Removed by Optimiser ***)
+
+F16_PathExpand (*** Removed by Optimiser ***)
+
+F16_RandomWrite (*** Removed by Optimiser ***)
+
+F16_ReadSector (*** Removed by Optimiser ***)
+
+F16_RemoveDir (*** Removed by Optimiser ***)
+
+F16_StrToDate (*** Removed by Optimiser ***)
+
+F16_StrToTime (*** Removed by Optimiser ***)
+
+F16_TimeToStr (*** Removed by Optimiser ***)
+
+F16_WriteSector (*** Removed by Optimiser ***)
+
+FileLoad
+
+FPGAload
+
+freeMemoryUpdate
+->_F16_FsInfo
+
+GetButtonPort
+
+GetRTCdate (*** Removed by Optimiser ***)
+
+GetRTCtime
+
+HandleScopeClock
+
+IncDecByte
+
+IncDecInt
+
+InitButtonPort
+
+InitScopeClock
+
+InitSPI
+
+IsClusEOF
+
+IsClusRES
+
+ModuloMask (*** Removed by Optimiser ***)
+
+new_object_slides
+
+NewRandomIncSlow (*** Removed by Optimiser ***)
+
+NewRandomIncToMid
+
+NewRandomPos
+
+onSysTick
+
+ParamIntToHex (*** Removed by Optimiser ***)
+
+ParamIntToStr (*** Removed by Optimiser ***)
+
+ParamLongToHex (*** Removed by Optimiser ***)
+
+ParamLongToStr
+
+ParamStr2Param
+
+ParseExtract
+
+ParseGetParam
+
+ParseSetParam
+
+ParseSubCh
+
+readCSD (*** Removed by Optimiser ***)
+
+readRegister (*** Removed by Optimiser ***)
+
+ReceiveBRAM16binary
+
+ReceiveFPGA
+
+ReceiveFPGAbinary
+
+RestoreDamage
+
+RTCtickHour (*** Removed by Optimiser ***)
+
+RTCtickMinute (*** Removed by Optimiser ***)
+
+RTCtickSecond (*** Removed by Optimiser ***)
+
+send_cmd
+
+SendButton (*** Removed by Optimiser ***)
+
+SendButtonPulse (*** Removed by Optimiser ***)
+
+SendByteToFPGA
+
+SendFPGA16
+
+SendFPGA8 (*** Removed by Optimiser ***)
+
+SendLongToFPGA
+
+SendWordToFPGA (*** Removed by Optimiser ***)
+
+serDummy (*** Removed by Optimiser ***)
+
+SerPrompt
+
+SetItemVal
+
+SetRTCdate
+
+SetRTCtime
+
+SetSectOfs
+
+ShiftFPGAconf
+
+ShiftFPGAconfblock
+
+ShowLogoFiles
+
+ShowTestScreen
+
+SkipObjectIfInvisible
+
+SlideInFileAnimation
+
+SPI_LoaderBegin
+
+SPI_LoaderCmd
+->SendFPGAreg
+
+SPI_LoaderWriteInc (*** Removed by Optimiser ***)
+->SendFPGA32
+
+SPI_SetDACsDirect (*** Removed by Optimiser ***)
+->SendFPGA32
+->SendFPGAreg
+
+SplashScreen
+
+SplashSequence1
+
+SplashSequence2
+
+SplashSequence3
+
+TimeToParamStr (*** Removed by Optimiser ***)
+
+UpdateAllFileObjects
+
+UpdateDamage
+
+UpdateDatePos
+
+UpdateDateString
+
+UpdateFileObject
+
+UpdateFlare
+
+UpdateRotatingText
+
+UpdateShoot
+
+UpdateUfoAnimation
+->UpdateUfo
+
+UpdateWeekday
+
+VE_CreateAllCharVecs (*** Removed by Optimiser ***)
+
+VE_DefaultVectors
+
+VE_DrawCharAt_b
+
+VE_DrawCharRelAt_b
+
+VE_DrawCircleAt_b (*** Removed by Optimiser ***)
+
+VE_DrawCircleSegmentAt
+
+VE_DrawCircleSegmentAt_b
+
+VE_DrawLargeROMvecArr (*** Removed by Optimiser ***)
+
+VE_DrawLineTo_b
+
+VE_DrawLineToRel_b (*** Removed by Optimiser ***)
+
+VE_DrawPinPointAt
+
+VE_DrawPinPointAt_b
+
+VE_DrawPointAt (*** Removed by Optimiser ***)
+
+VE_DrawPointAt_b
+
+VE_DrawROMvecArrRel
+
+VE_DrawStringAt_b
+
+VE_DrawVecArrRel_b
+
+VE_InitVars
+
+VE_MoveTo_b
+
+VE_MoveToRel_b (*** Removed by Optimiser ***)
+
+VE_Run
+
+VE_SetBeamInt
+
+VE_SetOffset_b
+
+VE_SetRotationDeg
+
+VE_SetRotationMid_b
+
+VE_SingleRun (*** Removed by Optimiser ***)
+
+VE_UploadBegin
+
+VE_UploadLong
+->SendFPGA32
+
+VE_UploadVals
+->SendFPGA32
+
+VectorLoad
+
+WaitButtonRelease
+
+WriteChPrefix
+
+WriteIntSer (*** Removed by Optimiser ***)
+
+WriteParamByteSer
+
+WriteParamHexSer
+
+WriteParamIntSer
+
+WriteParamLongSer
+
+WriteParamStrSer
+
+WriteSerInp
+
+Detailed Analysis
+=================
+
+Name : $_Main
+Function Type : Not known
+Return registers not known
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_BytesToRecords
+Function Type : Function
+Return registers : R16-17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_CleanCluster
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_ClusterToSector
+Function Type : Function
+Return registers : R16-19
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_CompareNames
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_FNameToNameExt
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_FreeChain
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_FsInfo
+Function Type : Function
+Return registers : R16-19
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_GetDirFatSector
+Function Type : Function
+Return registers : R16-19
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_GetDirItem
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_GetFAT
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_GetFATItem
+Function Type : Function
+Return registers : R16-19
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_GetFileFCluster
+Function Type : Function
+Return registers : R16-19
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_GetFirstFreeFATItem
+Function Type : Function
+Return registers : R16-19
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_GetFNameSBufNE
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_GetFreeFATItem
+Function Type : Function
+Return registers : R16-19
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_InitDirItem
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_InitFileSector
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_LoadSector
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_multiClearBlock
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+No parameters detected
+
+Name : _F16_multiReadBlock
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+No parameters detected
+
+Name : _F16_NameExtToFName
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_NextDirItem
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_NextFileSectorRd
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_PathExpand
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_readStart
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_readStop
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_RecordsToBytes
+Function Type : Function
+Return registers : R16-17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_SectorToCluster
+Function Type : Function
+Return registers : R16-19
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_SetFAT
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_SETFDI
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_SetFreeFATItem
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _F16_WriteSector
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+No parameters detected
+
+Name : _F16_writeStart
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _loadFileDataFromCluster
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _PowerOf
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : _SDwaitReady
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : AppearFileAnimation
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : CalcDays
+Function Type : Function
+Return registers : R16-17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : CheckCard
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : CheckDamage
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : CheckSer
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : Chores
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : ChoresDelay
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : Cmd2Index
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : CreateClock
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : CreateClockFace
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : CreateDate
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : CreateHoursHand
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : CreateLogo
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : CreateMinutesHand
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : CreatePendulum
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : CreateRotatingText
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : CreateSecondsHand
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : CreateTimeDigits
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : CreateUfoAnimation
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : CreateWeekday
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : DestroyFileAnimation
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : DS_GetDate
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : DS_GetTime
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : DS_Init
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : DS_SetDate
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : DS_SetTime
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : F16_BlockRead
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : F16_DiskInit
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : F16_DiskReset
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : F16_EndOfFile
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : F16_FileAssign
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : F16_FileClose
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : F16_FileExist
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : F16_FileReset
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : F16_FileRewrite
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : F16_FindFirst
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : F16_FlushBufSec
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : F16_GetDiskFree
+Function Type : Function
+Return registers : R16-19
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : F16_GetDiskFree16
+Function Type : Function
+Return registers : R16-19
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : F16_GetDiskFree32
+Function Type : Function
+Return registers : R16-19
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : FileLoad
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : FPGAload
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : freeMemoryUpdate
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : GetButtonPort
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : GetRTCtime
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+No parameters detected
+
+Name : HandleScopeClock
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : IncDecByte
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : IncDecInt
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : InitAll
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : InitButtonPort
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : InitScopeClock
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : InitSPI
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+No parameters detected
+
+Name : InitVars
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : IsClusEOF
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+4 parameter bytes detected
+Parameter at position 0:
+  R17 loaded 1 time(s).
+Parameter at position 1:
+  R16 loaded 1 time(s).
+Parameter at position 2:
+  R17 loaded 1 time(s).
+Parameter at position 3 not used
+  Potential Future Optimisations
+  ++Use unused register instead of Parameter at location -3
+  ++Use register R16 instead of Parameter at location -2
+  ++Use register R17 instead of Parameter at location -1
+  ++Remove Parameter at location 0
+
+Name : IsClusRES
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+4 parameter bytes detected
+Parameter at position 0:
+  R17 loaded 1 time(s).
+Parameter at position 1:
+  R16 loaded 1 time(s).
+Parameter at position 2:
+  R17 loaded 1 time(s).
+Parameter at position 3 not used
+  Potential Future Optimisations
+  ++Use unused register instead of Parameter at location -3
+  ++Use register R16 instead of Parameter at location -2
+  ++Use register R17 instead of Parameter at location -1
+  ++Remove Parameter at location 0
+
+Name : new_object_slides
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : NewRandomIncToMid
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : NewRandomPos
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : onSysTick
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+No parameters detected
+
+Name : ParamLongToStr
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : ParamStr2Param
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+No parameters detected
+
+Name : ParseExtract
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : ParseGetParam
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : ParseSetParam
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : ParseSubCh
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : ReceiveBRAM16binary
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : ReceiveFPGA
+Function Type : Function
+Return registers : R16-19
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : ReceiveFPGAbinary
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : RestoreDamage
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : send_cmd
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : SendByteToFPGA
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : SendFPGA16
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+No parameters detected
+
+Name : SendFPGA32
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+No parameters detected
+
+Name : SendFPGAreg
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+No parameters detected
+
+Name : SendLongToFPGA
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : SerCRLF
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+No parameters detected
+
+Name : SerPrompt
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : SetItemVal
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : SetRTCdate
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+No parameters detected
+
+Name : SetRTCtime
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+No parameters detected
+
+Name : SetSectOfs
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+4 parameter bytes detected
+Parameter at position 0:
+  R19 loaded 1 time(s).
+Parameter at position 1:
+  R18 loaded 1 time(s).
+Parameter at position 2:
+  R17 loaded 1 time(s).
+Parameter at position 3:
+  R16 loaded 1 time(s).
+  Potential Future Optimisations
+  ++Use register R19 instead of Parameter at location -3
+  ++Use register R18 instead of Parameter at location -2
+  ++Use register R17 instead of Parameter at location -1
+  ++Use register R16 instead of Parameter at location 0
+
+Name : ShiftFPGAconf
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+No parameters detected
+
+Name : ShiftFPGAconfblock
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+No parameters detected
+
+Name : ShowLogoFiles
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : ShowTestScreen
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : SkipObjectIfInvisible
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : SlideInFileAnimation
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : SPI_GetCurrentVec
+Function Type : Function
+Return registers : R16-17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : SPI_LoaderBegin
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : SPI_LoaderCmd
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : SplashScreen
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : SplashSequence1
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : SplashSequence2
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : SplashSequence3
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : UpdateAllFileObjects
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : UpdateDamage
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : UpdateDatePos
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : UpdateDateString
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : UpdateFileObject
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : UpdateFlare
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : UpdateHoursHand
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : UpdateLogo
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : UpdateMinutesHand
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : UpdatePendulum
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : UpdateRotatingText
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : UpdateSecondsHand
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : UpdateShoot
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : UpdateUfo
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : UpdateUfoAnimation
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : UpdateWeekday
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : UpdateWeekdayPos
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : VE_DefaultVectors
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : VE_DrawCharAt_b
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : VE_DrawCharRelAt_b
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : VE_DrawCircleSegmentAt
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : VE_DrawCircleSegmentAt_b
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : VE_DrawLineTo_b
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : VE_DrawPinPointAt
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : VE_DrawPinPointAt_b
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : VE_DrawPointAt_b
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : VE_DrawROMvecArrRel
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : VE_DrawStringAt_b
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : VE_DrawVecArrRel_b
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : VE_InitVars
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : VE_MoveTo_b
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : VE_Run
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : VE_SetBeamInt
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : VE_SetOffset_b
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : VE_SetRotationDeg
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : VE_SetRotationMid_b
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : VE_Stop
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : VE_UploadBegin
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : VE_UploadLong
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+4 parameter bytes detected
+Parameter at position 0:
+  R19 loaded 1 time(s).
+Parameter at position 1:
+  R18 loaded 1 time(s).
+Parameter at position 2:
+  R17 loaded 1 time(s).
+Parameter at position 3:
+  R16 loaded 1 time(s).
+  Potential Future Optimisations
+  ++Use register R19 instead of Parameter at location -3
+  ++Use register R18 instead of Parameter at location -2
+  ++Use register R17 instead of Parameter at location -1
+  ++Use register R16 instead of Parameter at location 0
+
+Name : VE_UploadVals
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+5 parameter bytes detected
+Parameter at position 0:
+  R17 loaded 2 time(s).
+Parameter at position 1:
+  R17 loaded 1 time(s).
+Parameter at position 2:
+  R16 loaded 1 time(s).
+Parameter at position 3:
+  R17 loaded 1 time(s).
+Parameter at position 4:
+  R16 loaded 1 time(s).
+  Potential Future Optimisations
+  ++Use unused register instead of Parameter at location -4
+  ++Use register R17 instead of Parameter at location -3
+  ++Use register R16 instead of Parameter at location -2
+  ++Use unused register instead of Parameter at location -1
+  ++Use unused register instead of Parameter at location 0
+
+Name : VectorLoad
+Function Type : Function
+Return register : R17
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : WaitButtonRelease
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : WriteChPrefix
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+No parameters detected
+
+Name : WriteParamByteSer
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : WriteParamHexSer
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : WriteParamIntSer
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : WriteParamLongSer
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : WriteParamStrSer
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+
+Name : WriteSerInp
+Function Type : Procedure
+No Return registers
+Local Vars use 0 bytes
+Full analysis not possible
+

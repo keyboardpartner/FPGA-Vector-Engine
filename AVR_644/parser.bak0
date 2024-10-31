@@ -1,0 +1,700 @@
+Unit parser;
+
+interface
+
+uses fpga_if, global_vars, files;
+
+// #############################################################################
+// gekürzte Parser-Version ohne Script!
+procedure ParseGetParam;
+procedure ParseSetParam;
+procedure ParseSubCh;
+
+
+// #############################################################################
+//Ausgabe-Prozeduren
+
+procedure ParamIntToStr;
+procedure ParamLongToStr;
+procedure ParamLongToHex;
+procedure ParamIntToHex;
+procedure WriteDirEntry;
+procedure WriteParamStrSer;
+procedure WriteParamIntSer;
+procedure WriteParamByteSer;
+procedure WriteParamHexSer;    // für verbose-Anfrage
+procedure WriteParamLongSer;
+procedure ParamStrOnLCD;
+procedure SollWerteOnLCD;
+function Checklimits:boolean;
+procedure WriteChPrefix;
+procedure WriteSerInp;
+procedure SerPrompt(myErr:tError);
+
+
+procedure CheckSer;
+procedure Chores;
+procedure CheckDelay(myDelay:byte);
+
+Function InitLoad(myINITfileName:String[12]): Boolean;
+
+implementation
+
+
+// #############################################################################
+// Ausgabe-Prozeduren
+// #############################################################################
+
+
+procedure WriteChPrefix;
+begin
+  SerOut('#');
+end;
+
+procedure WriteSerInp;
+begin
+  write(SerOut, SerInpStr);   // Befehl weiterreichen
+  SerCRLF;
+end;
+
+procedure SerPrompt(myErr:tError);
+var myFault, myStatus:Byte;
+//Error-Meldung und Status-Request-Antwort,
+//Status Bit 7=Busy, 6=UserSRQ, 5=OverLoad, 4=WriteEnable, 3..0=Fault/Error
+begin
+  SubCh:= ErrSubCh; // Fehler-Kanal
+  WriteChPrefix;
+  FileErrorFlag:=(FaultFlags<>0);
+  if FileErrorFlag then
+    myStatus:=Status or FaultFlags;
+  else
+    myStatus:=Status or ord(myErr);
+    if myErr <> noErr then
+      inc(ErrCount);
+    endif;
+  endif;
+  write(SerOut, ByteToStr(myStatus));
+  if FileErrorFlag then
+    myFault:=FaultFlags;
+    for i := 0 to 3 do
+      if (myFault and 1) = 1 then
+        SerOut(#32);
+        write(SerOut,FaultStrArr[i]);
+      endif;
+      myFault:=myFault shr 1;
+    endfor;
+  endif;
+  SerOut(#32);
+  write(SerOut,ErrStrArr[ord(myErr)]);
+  SerCRLF;
+end;
+
+procedure ParamIntToStr;
+begin
+  ParamStr:=IntToStr(ParamInt);
+end;
+
+procedure ParamLongToStr;
+//mit einer Nachkommastelle in Strin wandeln
+begin
+  ParamStr:=LongToStr(ParamLong);
+end;
+
+procedure ParamLongToHex;
+//Longin in Hex-String wandeln
+begin
+  ParamStr:=LongToHex(ParamLong);
+end;
+
+procedure ParamIntToHex;
+//Longin in Hex-String wandeln
+begin
+  ParamStr:=IntToHex(ParamInt);
+end;
+
+procedure WriteDirEntry;
+//Directory-Eintrag FileNum ausgeben
+begin
+   WriteChPrefix;
+   ParamStr:= ByteToStr(FileNum);
+   write(SerOut, ParamStr);
+   SerOut(#32);
+   SerOut('[');
+   ParamStr:= DirectoryArray[FileNum];
+   write(SerOut, ParamStr);
+   SerOut(']');
+   SerCRLF;
+   mdelay(10);
+end;
+
+procedure WriteParamStrSer;
+begin
+  WriteChPrefix;
+  write(SerOut, ParamStr);
+  SerCRLF;
+end;
+
+
+procedure WriteParamIntSer;
+begin
+  ParamStr:= IntToStr(ParamInt);
+  WriteParamStrSer;
+end;
+
+procedure WriteParamByteSer;
+begin
+  ParamStr:= ByteToStr(ParamByte);
+  WriteParamStrSer;
+end;
+
+procedure WriteParamHexSer;    // für verbose-Anfrage
+begin
+  WriteChPrefix;
+  write(SerOut, ParamStr);
+  SerOut(#32);
+  SerOut('[');
+  SerOut('$');
+  ParamStr:= LongToHex(ParamLong);
+  write(SerOut, ParamStr);
+  SerOut(']');
+  SerCRLF;
+end;
+
+procedure WriteParamLongSer;
+begin
+  ParamStr:= LongToStr(ParamLong);
+  WriteParamStrSer;
+end;
+
+// #############################################################################
+
+procedure ParamStrOnLCD;
+begin
+  LCDxy_M(LCD_m1, 0, 0);
+  write(lcdout_m,ParamStr);
+  LCDclrEOL_m(LCD_m1);
+  LCDxy_M(LCD_m1, 7, 0);
+  if SelectDigit then
+    lcdout_m(#2);
+  else
+    lcdout_m(#0);
+  endif;
+  LCDxy_M(LCD_m1, 0, 1);
+end;
+
+
+procedure SollWerteOnLCD;
+begin
+  if (not LCDpresent) then
+    return;
+  endif;
+  if (not ChangedFlag) then
+    return; // unverändert, nichts zu tun
+  endif;
+  case Modify of
+    param0..param3:
+      ParamLong:=ParamLongArray[ord(Modify)];
+      ParamLongToHex;
+      LCDxy_M(LCD_m1, 0, 0);
+      write(lcdout_m,ParamStr);
+      LCDxy_M(LCD_m1, 0, 1);
+      write(lcdout_m,ParamHintStr);
+      lcdout_m(char(ord(modify)+48));
+      lcdout_m(#32);
+      if SelectDigit then
+        LCDxy_M(LCD_m1, ParamDigit, 0);
+        LCDcursor_m(LCD_m1, false, false);
+        lcdout_m(#3);
+      else
+        LCDcursor_m(LCD_m1, true, true);
+      endif;
+      LCDxy_M(LCD_m1, ParamDigit, 0);
+      |
+    input0..input3:
+      LCDcursor_m(LCD_m1, false, false);
+      ParamLong:=InputLongArray[ord(Modify)-ord(input0)];
+      ParamLongToHex;
+      LCDxy_M(LCD_m1, 0, 0);
+      write(lcdout_m,ParamStr);
+      LCDxy_M(LCD_m1, 0, 1);
+      write(lcdout_m,InputHintStr);
+      lcdout_m(char(ord(modify)+44));
+      lcdout_m(#32);
+      |
+    filesel:
+      SelectDigit:=false;
+      LCDcursor_m(LCD_m1, false, false);
+      ParamStr:=ExtractFileName(DirectoryArray[FileNum]);
+      ParamStrOnLCD;
+      lcdout_m(#0);
+      LCDxy_M(LCD_m1, 0, 1);
+      ParamStr:=ExtractFileExt(DirectoryArray[FileNum]);
+      if length(ParamStr)=0 then
+        ParamStr:='---';
+      endif;
+      write(lcdout_m,ParamStr+FileNumStr);
+    |
+  endcase;
+end;
+
+function Checklimits:boolean;
+// liefert TRUE wenn "Out of Range"
+var myBool: Boolean;
+begin
+  myBool:=false;
+  if FileNum>127 then  // Byte!
+    FileNum:=0;
+    myBool:=true;
+  endif;
+  if FileNum>31 then  // Byte!
+    FileNum:=31;
+    myBool:=true;
+  endif;
+  return(myBool);
+end;
+
+// #############################################################################
+// gerätespezifischer Parser-Teil
+// #############################################################################
+
+procedure ParseGetParam;
+var IntInOutFlag:boolean;
+    myBranch:boolean;
+    myByte:byte;
+    myIndex:Byte;
+
+begin
+  myIndex:=byte(SubCh mod 10);  // angespr. Register 0..9 errechnen aus SubCh-Rest
+  case SubCh of
+    0..79:
+      FPGAreg:=Word(SubCh);
+      SendFPGAreg;
+      if (SubCh < 4) then
+        FPGAsendLong:=ParamLongArray[SubCh];  // bei SPI-Lesen gesendeter Param retten
+      endif;
+      SendFPGA32;
+      ParamLong:=FPGAreceiveLong;
+      WriteParamLongSer;
+      |
+    80:
+      ParamByte:=ord(Modify);
+      WriteParamByteSer;
+      |
+    100..103:
+      DS_GetTime(second, minute, hour, pm);
+      ParamByte:= TimeDateArr[myIndex];
+      WriteParamByteSer;
+      |
+    104..107:
+      DS_GetDate(weekday, day, month, year);
+      ParamByte:= TimeDateArr[myIndex];
+      WriteParamByteSer;
+      |
+    108:
+      ParamByte:= byte(H24mode);
+      WriteParamByteSer;
+      |
+    200..219:
+      ParamInt:= EE_OptionArray[SubCh-200];
+      WriteParamIntSer;
+      |
+    220..223:
+      ParamByte:= EE_VEoptions[myIndex];
+      WriteParamByteSer;
+      |
+    240:
+      WriteChPrefix;
+      write(SerOut, '0 ['+ EE_initFileName+']');
+      SerCRLF;
+      |
+    241: // DatFileName
+      WriteChPrefix;
+      write(SerOut,'0 ['+EE_DatFileName+']');
+      SerCRLF;
+      |
+    251: // Fehlerzähler auslesen
+      ParamInt:=Errcount;
+      WriteParamIntSer;
+      |
+    253: // SerTest, gibt Input-String komplett und unverändert wieder aus
+      write(SerOut, SerInpStr);
+      SerCRLF;
+      |
+    254: // Version
+      WriteChPrefix;
+      write(SerOut,Vers1Str);
+      SerCRLF;
+      |
+    250,255: // Status
+      serprompt(NoErr);
+      |
+  else
+    serprompt(ParamErr);
+  endcase;
+end;
+
+// #############################################################################
+
+procedure ParseSetParam;
+var myByte:byte;
+    myIndex:Byte;
+    myBranch:boolean;
+
+begin
+  if Labelseek then
+    return; // nichts machen, wenn Label gesucht wird
+  endif;
+  ChangedFlag:=true;
+  myIndex:= byte(SubCh mod 10);  // angespr. Register 0..9 errechnen aus SubCh-Rest
+  case SubCh of
+    0..79:
+      if (SubCh < 4) then
+        ParamLongArray[SubCh]:= ParamLong;
+        EE_InitParamLongArray[SubCh]:= ParamLong;
+        VE_InitVars;
+      endif;
+      FPGAreg:=Word(SubCh);
+      SendFPGAreg;
+      FPGAsendLong:=ParamLong;
+      SendFPGA32;
+      |
+    80: // LCD Anzeige-Wert
+      Modify:=tModify(ParamByte);
+      |
+    100..103:
+      TimeDateArr[myIndex]:= ParamByte;
+      SetRTCtime;
+      DS_SetTime(second, minute, hour, pm);
+      |
+    104..107:
+      TimeDateArr[myIndex]:= ParamByte;
+      SetRTCdate;
+      DS_SetDate(weekday, day, month, year);
+      |
+    108:
+      H24mode:= (ParamByte<>0);
+      |
+    128..131:  // Default-Auto-Increment-Register
+      FPGAreg:=Word(SubCh);
+      SendFPGAreg;
+      FPGAsendLong:=ParamLong;
+      SendFPGA32;
+      |
+    200..219:
+      EE_OptionArray[SubCh-200]:= ParamInt;
+      InitVars;
+      |
+    220..223:
+      EE_VEoptions[myIndex]:= ParamByte;
+      VE_InitVars;
+      |
+    229:
+      InitScopeClockRequest:= true;
+      |
+    251: //Error-Count
+      ErrCount:=ParamInt;
+      |
+    253: // SerTest, gibt Input-String komplett und unverändert wieder aus
+      write(SerOut, SerInpStr);
+      SerCRLF;
+      return;
+      |
+    250: // EEPROM Write Enable
+      |
+    280: //AutoIncrement-Register für DAT-Files
+      AutoIncReg:= ParamByte;
+      |
+    281: //AutoIncrement-Select (AUX-Select auf SubCh <AutoIncReg> für DAT-Files
+      AutoIncSel:= ParamByte;
+      |
+    282:  //  Auto-Increment-Registerbreite im SPI, Anzahl Bytes (1, 2 oder 4)
+      AutoIncWidth:=ParamByte;
+      |
+   else
+    serprompt(ParamErr);
+    return;
+  endcase;
+  if CheckLimits then
+    serprompt(ParamErr);
+  else
+    if verbose then
+      serprompt(NoErr);
+    endif;
+  endif;
+end;
+
+// #############################################################################
+
+// allgemeiner Parser-Teil
+
+function Cmd2Index : byte;
+// Umsetzen eines Text-Befehls in Index-Eintrag der Befehlstabelle
+var myCmdIndex: byte;
+begin
+  ParamStr:= uppercase(ParamStr);
+  for myCmdIndex := 0 to CmdAnzahl do
+    if ParamStr = CmdStrArr[ord(myCmdIndex)] then
+      return(myCmdIndex);
+    endif;
+  endfor;
+  return(cmderr);
+end;
+
+function ParseExtract(nachGleich:boolean):boolean;
+//extrahiert ParamStr oder CmdStr aus SerInpStr,
+//liefert true, wenn Parameter, sonst false, wenn Command
+//akzeptiert auch alphanumerische Parameter als String nach "="
+var myChar: char; myBool:boolean;
+begin
+  ParamStr:='';
+  ParamAlpha:=false;
+  myBool:=false;
+  while SerInpStr[SerInpPtr] =' ' do // Leerzeichen überspringen
+    inc(serInpPtr);
+  endwhile;
+  if SerInpStr[SerInpPtr] in ['*'..'9'] then // Zahlen oder Wildcard, es wird ein Parameter
+    myBool:=true;
+    for i:=SerInpPtr to length(SerInpStr) do
+      mychar:=SerInpStr[i];
+      if myChar in ['*'..'9'] then
+        append(mychar,ParamStr);
+      else // Buchstabe oder sonstirgendwas, abbrechen
+        SerInpPtr:=i;
+        return(mybool);
+      endif;
+    endfor;
+  else
+    for i:=SerInpPtr to length(SerInpStr) do
+      mychar:=SerInpStr[i];
+      if mychar='"' then
+        ParamAlpha:=true;
+      else
+        if (mychar>='A') or ParamAlpha then
+          if (myChar in ['!','?','$']) then
+            SerInpPtr:=i;
+            return(mybool);
+          else
+            append(mychar,ParamStr);
+          endif;
+          if nachGleich then
+            ParamAlpha:=true;
+          endif;
+        else // Ziffer oder sonstirgendwas, abbrechen
+          SerInpPtr:=i;
+          return(mybool);
+        endif;
+      endif;
+    endfor;
+  endif;
+  return(mybool);
+end;
+
+procedure ParamStr2Param;
+var DecPointPos:byte;
+begin
+  ParamLong:= StrToInt(ParamStr);
+  ParamInt:= integer(ParamLong);
+  ParamByte:= byte(ParamInt);
+end;
+
+// #############################################################################
+
+procedure ParseSubCh;
+//Überprüfen, ob Befehl oder Daten eingegangen und für uns, Parser-Vorbehandlung,
+//Achtung: Erweitert um ParseResult für Anzeige-Auswertung, KEIN REFERENZ-PARSER!
+
+var
+  GleichPos,
+  CheckSpos, myCheckSum,CheckSumIn:byte;
+  SubChOffset:integer;
+
+  myChar:char;
+  hasMainCh, hasCRC, isResult, isOmni, isRequest: Boolean;
+
+begin
+  if SerInpStr='' then
+    serprompt(NoErr);
+    return;
+  endif;
+  hasMainCh:=(pos(':',SerInpStr)>0); // Kanaltrenner-':'
+  gleichPos:=pos('=',SerInpStr); // Set-'='
+  isRequest:=(GleichPos=0); // Abfrage
+  myChar:=SerInpStr[1];
+  isOmni:=(myChar='*');    // Omni-Flag
+  isResult:=(myChar='#');  // Ergebnis-'#'
+  SerInpPtr:=1;
+  if isResult then
+    SerInpPtr:=2;
+  endif;
+  if hasMainCh then
+    ParseExtract(false);
+    inc(SerInpPtr);
+    if isOmni then // Omni-Befehl
+      WriteSerInp; // weiterleiten
+    else
+      CurrentCh:=StrToInt(ParamStr);
+    endif;
+  endif;
+  if CurrentCh=9 then // interne Anfrage vom FPGA-Core
+    isOmni:=true;  // weitere Verarbeitung erzwingen
+  endif;
+  if isResult and (CurrentCh=TransferCh) then
+    if not INITfileIsOpen then
+      WriteSerInp;
+    endif;
+    ParseResult:=true;
+  else
+    if (not isOmni) and (CurrentCh<>MainCh) and hasMainCh then // nicht für uns
+      WriteSerInp;
+      return;
+    endif;
+  endif;
+
+// Befehl/Parameter ist für uns, ab hier eigentliche Behandlung
+// Wenn vorhanden, XOR-Prüfsumme checken, Präfix-"$" zählt nicht mit!
+  verbose:=(pos('!',SerInpStr)>0) OR (pos('?',SerInpStr)>0); // Ausführliche Antwort erwünscht
+  CheckSpos:=pos('$',SerInpStr);
+  hasCRC:=CheckSpos>0; // CheckSumIn-'$'
+
+  if hasCRC then
+    ParamStr:=copy(SerInpStr,CheckSpos+1, 2);
+    CheckSumIn:=HexToInt(ParamStr); // erhaltene XOR-Checksumme
+    myCheckSum:=0;
+    for i:= 1 to CheckSpos-1 do
+      myChar:=SerInpStr[i];
+      myCheckSum:=myCheckSum xor ord(myChar);
+    endfor;
+    if myCheckSum <> CheckSumIn then
+      serprompt(CheckSumErr);
+      return;
+    endif;
+  endif;
+//  SerInpStr:=trim(SerInpStr);
+
+//Parse einzelnen Befehl
+  if ParseExtract(false) then
+    SubChOffset:=0; // direkter SubCh-Aufruf
+  else
+    CmdWhich:=Cmd2Index; // Klartext übersetzen
+    if CmdWhich = cmderr then
+      serprompt(SyntaxErr);
+      return;
+    endif;
+    SubChOffset:=Cmd2SubChArr[ord(CmdWhich)];
+    ParseExtract(false); // SubCh-Parameter holen
+  endif;
+  SubCh:=StrToInt(ParamStr)+SubChOffset; //auf neuen SubCh umrechnen
+{$IFDEF PARSERESULT}        // Results entgegennehmen
+  if ParseResult then
+    if not isRequest then
+      SerInpPtr:=gleichPos+1; // Set-'='
+      ParseExtract(true);
+      ParamStr2Param;
+    endif;
+  else
+{$ENDIF}
+    if isRequest then
+      ParseGetParam;
+    else
+      SerInpPtr:=gleichPos+1; // Set-'='
+      if ParseExtract(true) then
+        ParamStr2Param;
+      else
+        ParamLong:=0;
+        ParamInt:=0;
+        ParamByte:=0;
+      endif;
+      ParseSetParam;
+    endif;
+{$IFDEF PARSERESULT}        // Results entgegennehmen
+  endif;
+  ParseResult:=false;
+{$ENDIF}
+end;
+
+
+// #############################################################################
+// Regelmäßig aufgerufen, aber nicht im Interrupt
+// #############################################################################
+
+procedure Chores;
+// Regelmäßig außerhalb des Interrupts aus CheckSer heraus aufgerufen:
+begin
+  if modify in [param0..input3] then
+    ExchangeFPGA(byte(modify) AND 3);
+  endif;
+end;
+
+procedure CheckSer;
+var
+myChar: char;
+begin
+  if serStat then //
+    myChar:=serInp;
+    if myChar in [#32..#127] then // nur 7-Bit-ASCII ohne Controls
+      append(myChar,SerInpStr);
+    endif;
+    if (length(SerInpStr)>0) and (mychar=#8) then // Backspace
+      setlength(SerInpStr, length(SerInpStr)-1);
+    endif;
+    if myChar=#13 then
+      LEDactivity:=low; // LED aus
+      FaultFlags:=0;
+      ParseSubCh;               // Befehl interpretieren, wenn für uns
+      SerInpStr:='';
+      setSystimer(PanelTimer,10);    // keine Panel-Abfrage während der nächsten 100 ms
+      SetSystimer(DisplayTimer, 25); // kein Display-Refresh während der nächsten 250 ms
+      SerOut('>');
+    endif;
+  endif;
+end;
+
+procedure CheckDelay(myDelay:byte);
+// Delay mit serieller Abfrage in 1-ms-Schritten
+var mycount:byte;
+begin
+  for mycount:=1 to mydelay do
+    CheckSer;
+  endfor;
+end;
+
+
+Function InitLoad(myINITfileName:String[12]): Boolean;
+// liest Datei von SD- oder MMC-Karte und interpretiert Befehle nach
+// c't-Lab-Syntax
+var
+  WaitLoops:Integer; verboseSave, loaded:Boolean;
+begin
+  loaded:= false;
+  if CardOK then
+   if F16_FileExist ('\', myINITfileName, faFilesOnly) then
+      loaded:= true;
+      F16_FileAssign (InitFile, '',myINITfileName);
+      F16_FileReset (InitFile); // Datei zum Lesen öffnen
+      INITfileIsOpen:=true;
+      while not F16_EndOfFile(InitFile) do // read the entire file
+        ReadLn(InitFile, SerInpStr);
+        if SerInpStr[1]<>'/' then
+          ParseSubCh;
+        endif;
+        SerInpStr:='';
+      endwhile; // until end of file
+      F16_FileClose (InitFile);
+      SerInpStr:='';
+      ReadErr:=false;
+    endif;
+  endif;
+  INITfileIsOpen:=false;
+  verbose:= verboseSave;
+  if loaded then
+    write(SerOut,'/ INI Load OK');
+  else
+    write(SerOut,'/ ERR: INI not loaded!');
+  endif;
+  SerCRLF;
+  return(loaded);
+end;
+
+
+end.
+
