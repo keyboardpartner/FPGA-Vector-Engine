@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.272,=E:\Dropbox\AsteroidsClock\Delphi\CPort\Source\CPortSetup.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.517,=E:\Dropbox\HX3_delphi\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.707,=E:\Dropbox\AsteroidsClock\Delphi\CPort\Source\CPortSetup.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.064,=E:\Dropbox\AsteroidsClock\Delphi\CPort\Source\CPortEsc.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.363,E:\Dropbox\AsteroidsClock\Delphi\CPort\Source\CPortSetup.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.082,E:\Dropbox\AsteroidsClock\Delphi\hpg_to_arr.dfm=E:\Dropbox\HX3_delphi\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.350,=E:\Dropbox\AsteroidsClock\Delphi\CPort\Source\CPortAbout.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.463,E:\Dropbox\AsteroidsClock\Delphi\hpg_to_arr.dfm=E:\Dropbox\AsteroidsClock\Delphi\hpgl_to_arr_main.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.255,=E:\Dropbox\AsteroidsClock\Delphi\CPort\Source\CPort.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.276,=E:\Dropbox\AsteroidsClock\Delphi\CPort\Source\CPortCtl.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.404,E:\Dropbox\AsteroidsClock\Delphi\import_files.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.471,=E:\Dropbox\AsteroidsClock\Delphi\CPort\Source\CPortReg.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.540,E:\Dropbox\AsteroidsClock\Delphi\CPort\Source\CPortReg.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.465,E:\Dropbox\AsteroidsClock\Delphi\hpgl_to_pas.dproj=E:\Dropbox\HX3_delphi\Project1.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.451,=E:\Dropbox\AsteroidsClock\Delphi\CPort\Source\CPortMonitor.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.294,=E:\Dropbox\AsteroidsClock\Delphi\CPort\Source\CPortTrmSet.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.257,E:\Dropbox\AsteroidsClock\Delphi\hpgl_import.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.105,=E:\Dropbox\AsteroidsClock\Delphi\import_files.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.717,=E:\Dropbox\AsteroidsClock\Delphi\hpgl_import.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.082,E:\Dropbox\AsteroidsClock\Delphi\hpg_to_arr.pas=E:\Dropbox\HX3_delphi\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.463,E:\Dropbox\AsteroidsClock\Delphi\hpg_to_arr.pas=E:\Dropbox\AsteroidsClock\Delphi\hpgl_to_arr_main.pas</Transaction>
+  </Transactions>
+	<ProjectSortOrder AutoSort="0" SortType="0">
+    <File Path="CPort"/>
+    <File Path="CPort\Source"/>
+    <File Path="CPort\Source\CPort.pas"/>
+    <File Path="CPort\Source\CPortAbout.pas"/>
+    <File Path="CPort\Source\CPortAbout.dfm"/>
+    <File Path="CPort\Source\CPortCtl.pas"/>
+    <File Path="CPort\Source\CPortEsc.pas"/>
+    <File Path="CPort\Source\CPortMonitor.pas"/>
+    <File Path="CPort\Source\CPortSetup.pas"/>
+    <File Path="CPort\Source\CPortTrmSet.pas"/>
+    <File Path="CPort\Source\CPortTrmSet.dfm"/>
+    <File Path="hpgl_to_arr_main.pas"/>
+    <File Path="hpgl_to_arr_main.dfm"/>
+  </ProjectSortOrder>
+</BorlandProject>
