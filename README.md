@@ -2,8 +2,7 @@
 
 ![GitHub Logo](https://github.com/keyboardpartner/FPGA-Vector-Engine/blob/main/ast_clk_2.jpg)
 
-Dual DAC XY + Z Vector Engine with Asteroids Game and Scope Clock for use with [CTLAB FPGA Board](https://www.sn7400.de/ctlab/), [XC3S400 FPGA](https://www.sn7400.de/ctlab/Schematics/schem_FPGA-IO.pdf) plus [ATmega644 controller](https://www.sn7400.de/ctlab/Schematics/schem_FPGA-MC.pdf) with [DACRAM extension](https://www.sn7400.de/ctlab/Schematics/schem_FPGA-DACRAM.pdf)
-Uses Dual DAC AD5447 output and Z/Audio R-DAC. Omit SRAM, AD9752 TxDAC and FreqZ input components.
+Dual DAC XY + Z Vector Engine with Asteroids Game and Scope Clock for use with [CTLAB FPGA Board](https://www.sn7400.de/ctlab/), containing [XC3S400 FPGA](https://www.sn7400.de/ctlab/Schematics/schem_FPGA-IO.pdf) and [ATmega644 controller](https://www.sn7400.de/ctlab/Schematics/schem_FPGA-MC.pdf). Needs [DACRAM extension](https://www.sn7400.de/ctlab/Schematics/schem_FPGA-DACRAM.pdf) with Dual DAC AD5447 output and Z/Audio R-DAC. Omit SRAM, AD9752 TxDAC and FreqZ input components.
 
 Vector engine for scope clock and animations uses a BRAM in FPGA containing a list of vector commands. BRAM is loaded via SPI from ATmega644 controller.
 
