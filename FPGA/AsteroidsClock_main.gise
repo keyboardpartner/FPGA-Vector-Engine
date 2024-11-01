@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<generated_project xmlns="http://www.xilinx.com/XMLSchema" xmlns:xil_pn="http://www.xilinx.com/XMLSchema">
+
+  <!--                                                          -->
+
+  <!--             For tool use only. Do not edit.              -->
+
+  <!--                                                          -->
+
+  <!-- ProjectNavigator created generated project file.         -->
+
+  <!-- For use in tracking generated file and other information -->
+
+  <!-- allowing preservation of process status.                 -->
+
+  <!--                                                          -->
+
+  <!-- Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved. -->
+
+  <version xmlns="http://www.xilinx.com/XMLSchema">11.1</version>
+
+  <sourceproject xmlns="http://www.xilinx.com/XMLSchema" xil_pn:fileType="FILE_XISE" xil_pn:name="AsteroidsClock_main.xise"/>
+
+  <files xmlns="http://www.xilinx.com/XMLSchema">
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_LSO" xil_pn:name=".lso"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGDBUILD_LOG" xil_pn:name="AsteroidsClockAVR.bld"/>
+    <file xil_pn:fileType="FILE_CMD_LOG" xil_pn:name="AsteroidsClockAVR.cmd_log"/>
+    <file xil_pn:fileType="FILE_JHD" xil_pn:name="AsteroidsClockAVR.jhd"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_LSO" xil_pn:name="AsteroidsClockAVR.lso"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NCD" xil_pn:name="AsteroidsClockAVR.ncd" xil_pn:subbranch="Par"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGC" xil_pn:name="AsteroidsClockAVR.ngc"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGD" xil_pn:name="AsteroidsClockAVR.ngd"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGR" xil_pn:name="AsteroidsClockAVR.ngr"/>
+    <file xil_pn:fileType="FILE_PAD_MISC" xil_pn:name="AsteroidsClockAVR.pad"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_PAR_REPORT" xil_pn:name="AsteroidsClockAVR.par" xil_pn:subbranch="Par"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_PCF" xil_pn:name="AsteroidsClockAVR.pcf" xil_pn:subbranch="Map"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="AsteroidsClockAVR.prj"/>
+    <file xil_pn:fileType="FILE_TRCE_MISC" xil_pn:name="AsteroidsClockAVR.ptwx"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_STX" xil_pn:name="AsteroidsClockAVR.stx"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_REPORT" xil_pn:name="AsteroidsClockAVR.syr"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_TIMING_TXT_REPORT" xil_pn:name="AsteroidsClockAVR.twr" xil_pn:subbranch="Par"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_TIMING_XML_REPORT" xil_pn:name="AsteroidsClockAVR.twx" xil_pn:subbranch="Par"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_UNROUTES" xil_pn:name="AsteroidsClockAVR.unroutes" xil_pn:subbranch="Par"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_BITGEN_REPORT" xil_pn:name="AsteroidsClockAVR.ut" xil_pn:subbranch="FPGAConfiguration"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_VHDL" xil_pn:name="AsteroidsClockAVR.vhf"/>
+    <file xil_pn:fileType="FILE_XPI" xil_pn:name="AsteroidsClockAVR.xpi"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST" xil_pn:name="AsteroidsClockAVR.xst"/>
+    <file xil_pn:fileType="FILE_HTML" xil_pn:name="AsteroidsClockAVR_envsettings.html"/>
+    <file xil_pn:fileType="FILE_NCD" xil_pn:name="AsteroidsClockAVR_guide.ncd" xil_pn:origination="imported"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_MAP_REPORT" xil_pn:name="AsteroidsClockAVR_map.map" xil_pn:subbranch="Map"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_MAP_REPORT" xil_pn:name="AsteroidsClockAVR_map.mrp" xil_pn:subbranch="Map"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NCD" xil_pn:name="AsteroidsClockAVR_map.ncd" xil_pn:subbranch="Map"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGM" xil_pn:name="AsteroidsClockAVR_map.ngm" xil_pn:subbranch="Map"/>
+    <file xil_pn:fileType="FILE_XRPT" xil_pn:name="AsteroidsClockAVR_map.xrpt"/>
+    <file xil_pn:fileType="FILE_XRPT" xil_pn:name="AsteroidsClockAVR_ngdbuild.xrpt"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_PAD_EXCEL_REPORT" xil_pn:name="AsteroidsClockAVR_pad.csv" xil_pn:subbranch="Par"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_PAD_TXT_REPORT" xil_pn:name="AsteroidsClockAVR_pad.txt" xil_pn:subbranch="Par"/>
+    <file xil_pn:fileType="FILE_XRPT" xil_pn:name="AsteroidsClockAVR_par.xrpt"/>
+    <file xil_pn:fileType="FILE_HTML" xil_pn:name="AsteroidsClockAVR_summary.html"/>
+    <file xil_pn:fileType="FILE_FITTER_REPORT" xil_pn:name="AsteroidsClockAVR_summary.xml"/>
+    <file xil_pn:fileType="FILE_WEBTALK" xil_pn:name="AsteroidsClockAVR_usage.xml"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="AsteroidsClockAVR_vhdl.prj"/>
+    <file xil_pn:fileType="FILE_XRPT" xil_pn:name="AsteroidsClockAVR_xst.xrpt"/>
+    <file xil_pn:fileType="FILE_SPL" xil_pn:name="MPX3_XOR.spl"/>
+    <file xil_pn:fileType="FILE_SYMBOL" xil_pn:name="MPX3_XOR.sym" xil_pn:origination="imported"/>
+    <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="_ngo"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/bitgen.xmsgs"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/map.xmsgs"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/ngdbuild.xmsgs"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/par.xmsgs"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/trce.xmsgs"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/xst.xmsgs"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_BITGEN_REPORT" xil_pn:name="asteroidsclockavr.bgn" xil_pn:subbranch="FPGAConfiguration"/>
+    <file xil_pn:fileType="FILE_BIN" xil_pn:name="asteroidsclockavr.bin"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_BIT" xil_pn:name="asteroidsclockavr.bit" xil_pn:subbranch="FPGAConfiguration"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_BITGEN_DRC" xil_pn:name="asteroidsclockavr.drc" xil_pn:subbranch="FPGAConfiguration"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="biquad_circle.prj"/>
+    <file xil_pn:fileType="FILE_XST_STX" xil_pn:name="biquad_circle.stx"/>
+    <file xil_pn:fileType="FILE_VHDL_INSTTEMPLATE" xil_pn:name="biquad_circle.vhi"/>
+    <file xil_pn:fileType="FILE_XST" xil_pn:name="biquad_circle.xst"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="biquad_circle_stx_beh.prj"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="biquad_sincos.prj"/>
+    <file xil_pn:fileType="FILE_XST_STX" xil_pn:name="biquad_sincos.stx"/>
+    <file xil_pn:fileType="FILE_XST" xil_pn:name="biquad_sincos.xst"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="bresenham.prj"/>
+    <file xil_pn:fileType="FILE_XST_STX" xil_pn:name="bresenham.stx"/>
+    <file xil_pn:fileType="FILE_VHDL_INSTTEMPLATE" xil_pn:name="bresenham.vhi"/>
+    <file xil_pn:fileType="FILE_XST" xil_pn:name="bresenham.xst"/>
+    <file xil_pn:fileType="FILE_LOG" xil_pn:name="fuse.log"/>
+    <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="isim"/>
+    <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_CMD" xil_pn:name="isim.cmd"/>
+    <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_LOG" xil_pn:name="isim.log"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="tb_biquad_circle_beh.prj"/>
+    <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_ISIM_EXE" xil_pn:name="tb_biquad_circle_isim_beh.exe"/>
+    <file xil_pn:fileType="FILE_ISIM_MISC" xil_pn:name="tb_biquad_circle_isim_beh.wdb"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="tb_biquad_circle_stx_beh.prj"/>
+    <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_ISIM_EXE" xil_pn:name="tb_bresenham_isim_beh.exe"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="tb_bresenham_stx_beh.prj"/>
+    <file xil_pn:fileType="FILE_HTML" xil_pn:name="usage_statistics_webtalk.html"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="vector_engine.prj"/>
+    <file xil_pn:fileType="FILE_SPL" xil_pn:name="vector_engine.spl"/>
+    <file xil_pn:fileType="FILE_XST_STX" xil_pn:name="vector_engine.stx"/>
+    <file xil_pn:fileType="FILE_SYMBOL" xil_pn:name="vector_engine.sym" xil_pn:origination="imported"/>
+    <file xil_pn:fileType="FILE_VHDL_INSTTEMPLATE" xil_pn:name="vector_engine.vhi"/>
+    <file xil_pn:fileType="FILE_XST" xil_pn:name="vector_engine.xst"/>
+    <file xil_pn:fileType="FILE_LOG" xil_pn:name="webtalk.log"/>
+    <file xil_pn:fileType="FILE_FITTER_REPORT" xil_pn:name="webtalk_pn.xml"/>
+    <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_INI" xil_pn:name="xilinxsim.ini"/>
+    <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="xlnx_auto_0_xdb"/>
+    <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="xst"/>
+  </files>
+
+  <transforms xmlns="http://www.xilinx.com/XMLSchema">
+    <transform xil_pn:end_ts="1669537225" xil_pn:name="TRAN_copyInitialToAbstractSimulation" xil_pn:start_ts="1669537225">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1669553680" xil_pn:in_ck="7634106188356660383" xil_pn:name="TRAN_copyAbstractToPostAbstractSimulation" xil_pn:start_ts="1669553680">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="InputChanged"/>
+      <status xil_pn:value="InputRemoved"/>
+      <status xil_pn:value="OutputChanged"/>
+      <status xil_pn:value="OutputRemoved"/>
+    </transform>
+    <transform xil_pn:end_ts="1669553680" xil_pn:name="TRAN_xawsToSimhdl" xil_pn:prop_ck="7748528178301425099" xil_pn:start_ts="1669553680">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1669553682" xil_pn:in_ck="-3445643139625200355" xil_pn:name="TRAN_schematicsToHdlSim" xil_pn:prop_ck="367365101742379651" xil_pn:start_ts="1669553680">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="InputChanged"/>
+      <status xil_pn:value="InputRemoved"/>
+    </transform>
+    <transform xil_pn:end_ts="1669537286" xil_pn:in_ck="-4419829920405185112" xil_pn:name="TRAN_regenerateCoresSim" xil_pn:prop_ck="-5750154424137577622" xil_pn:start_ts="1669537285">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="ipcore_dir/vec_ram_32.ngc"/>
+      <outfile xil_pn:name="ipcore_dir/vec_ram_32.vhd"/>
+    </transform>
+    <transform xil_pn:end_ts="1669553682" xil_pn:in_ck="7299501131227306591" xil_pn:name="TRAN_copyPostAbstractToPreSimulation" xil_pn:start_ts="1669553682">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="InputChanged"/>
+      <status xil_pn:value="InputRemoved"/>
+      <status xil_pn:value="OutputChanged"/>
+      <status xil_pn:value="OutputRemoved"/>
+    </transform>
+    <transform xil_pn:end_ts="1669553687" xil_pn:in_ck="7299501131227306591" xil_pn:name="TRAN_ISimulateBehavioralModelRunFuse" xil_pn:prop_ck="-3542714172669842406" xil_pn:start_ts="1669553682">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="InputChanged"/>
+      <status xil_pn:value="InputRemoved"/>
+      <status xil_pn:value="OutputChanged"/>
+      <status xil_pn:value="OutputRemoved"/>
+    </transform>
+    <transform xil_pn:end_ts="1669553687" xil_pn:in_ck="5706911129815902852" xil_pn:name="TRAN_ISimulateBehavioralModel" xil_pn:prop_ck="4607022719565607655" xil_pn:start_ts="1669553687">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="InputRemoved"/>
+      <status xil_pn:value="OutputChanged"/>
+      <status xil_pn:value="OutputRemoved"/>
+    </transform>
+    <transform xil_pn:end_ts="1667323049" xil_pn:name="TRAN_copyInitialToXSTAbstractSynthesis" xil_pn:start_ts="1667323049">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1726059546" xil_pn:in_ck="-2239085421392320113" xil_pn:name="TRAN_schematicsToHdl" xil_pn:prop_ck="-830927799929832575" xil_pn:start_ts="1726059544">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="AsteroidsClockAVR.vhf"/>
+    </transform>
+    <transform xil_pn:end_ts="1667323052" xil_pn:in_ck="-4419829920405185112" xil_pn:name="TRAN_regenerateCores" xil_pn:prop_ck="-5750154424137577622" xil_pn:start_ts="1667323051">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="ipcore_dir/vec_ram_32.ngc"/>
+      <outfile xil_pn:name="ipcore_dir/vec_ram_32.vhd"/>
+    </transform>
+    <transform xil_pn:name="TRAN_SubProjectAbstractToPreProxy">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1667323052" xil_pn:name="TRAN_xawsTohdl" xil_pn:prop_ck="821314011319616713" xil_pn:start_ts="1667323052">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1667323052" xil_pn:in_ck="1719565216305310999" xil_pn:name="TRAN_SubProjectPreToStructuralProxy" xil_pn:prop_ck="-6388418249790646593" xil_pn:start_ts="1667323052">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1667323052" xil_pn:name="TRAN_platgen" xil_pn:prop_ck="1023199285293948276" xil_pn:start_ts="1667323052">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1726059575" xil_pn:in_ck="-7977736100121424944" xil_pn:name="TRANEXT_xstsynthesize_spartan3" xil_pn:prop_ck="-6275857658766810551" xil_pn:start_ts="1726059546">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="WarningsGenerated"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="OutputChanged"/>
+      <outfile xil_pn:name=".lso"/>
+      <outfile xil_pn:name="AsteroidsClockAVR.jhd"/>
+      <outfile xil_pn:name="AsteroidsClockAVR.lso"/>
+      <outfile xil_pn:name="AsteroidsClockAVR.ngc"/>
+      <outfile xil_pn:name="AsteroidsClockAVR.ngr"/>
+      <outfile xil_pn:name="AsteroidsClockAVR.prj"/>
+      <outfile xil_pn:name="AsteroidsClockAVR.stx"/>
+      <outfile xil_pn:name="AsteroidsClockAVR.syr"/>
+      <outfile xil_pn:name="AsteroidsClockAVR.xst"/>
+      <outfile xil_pn:name="AsteroidsClockAVR_vhdl.prj"/>
+      <outfile xil_pn:name="AsteroidsClockAVR_xst.xrpt"/>
+      <outfile xil_pn:name="_xmsgs/xst.xmsgs"/>
+      <outfile xil_pn:name="webtalk_pn.xml"/>
+      <outfile xil_pn:name="xst"/>
+    </transform>
+    <transform xil_pn:end_ts="1724740791" xil_pn:in_ck="7197027007597655014" xil_pn:name="TRAN_compileBCD2" xil_pn:prop_ck="-1825588679257666811" xil_pn:start_ts="1724740791">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1726059579" xil_pn:in_ck="4861043956382829637" xil_pn:name="TRANEXT_ngdbuild_FPGA" xil_pn:prop_ck="4973849819398364231" xil_pn:start_ts="1726059575">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="AsteroidsClockAVR.bld"/>
+      <outfile xil_pn:name="AsteroidsClockAVR.ngd"/>
+      <outfile xil_pn:name="AsteroidsClockAVR_ngdbuild.xrpt"/>
+      <outfile xil_pn:name="_ngo"/>
+      <outfile xil_pn:name="_xmsgs/ngdbuild.xmsgs"/>
+    </transform>
+    <transform xil_pn:end_ts="1726059584" xil_pn:in_ck="4626992313839554288" xil_pn:name="TRANEXT_map_spartan3" xil_pn:prop_ck="-8749182176807842046" xil_pn:start_ts="1726059579">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="WarningsGenerated"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="OutputChanged"/>
+      <outfile xil_pn:name="AsteroidsClockAVR.pcf"/>
+      <outfile xil_pn:name="AsteroidsClockAVR_map.map"/>
+      <outfile xil_pn:name="AsteroidsClockAVR_map.mrp"/>
+      <outfile xil_pn:name="AsteroidsClockAVR_map.ncd"/>
+      <outfile xil_pn:name="AsteroidsClockAVR_map.ngm"/>
+      <outfile xil_pn:name="AsteroidsClockAVR_map.xrpt"/>
+      <outfile xil_pn:name="AsteroidsClockAVR_summary.xml"/>
+      <outfile xil_pn:name="AsteroidsClockAVR_usage.xml"/>
+      <outfile xil_pn:name="_xmsgs/map.xmsgs"/>
+    </transform>
+    <transform xil_pn:end_ts="1726059626" xil_pn:in_ck="1164194328128008489" xil_pn:name="TRANEXT_par_spartan3" xil_pn:prop_ck="-5298528756167062855" xil_pn:start_ts="1726059584">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="WarningsGenerated"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="AsteroidsClockAVR.ncd"/>
+      <outfile xil_pn:name="AsteroidsClockAVR.pad"/>
+      <outfile xil_pn:name="AsteroidsClockAVR.par"/>
+      <outfile xil_pn:name="AsteroidsClockAVR.ptwx"/>
+      <outfile xil_pn:name="AsteroidsClockAVR.unroutes"/>
+      <outfile xil_pn:name="AsteroidsClockAVR.xpi"/>
+      <outfile xil_pn:name="AsteroidsClockAVR_pad.csv"/>
+      <outfile xil_pn:name="AsteroidsClockAVR_pad.txt"/>
+      <outfile xil_pn:name="AsteroidsClockAVR_par.xrpt"/>
+      <outfile xil_pn:name="_xmsgs/par.xmsgs"/>
+    </transform>
+    <transform xil_pn:end_ts="1726059653" xil_pn:in_ck="-7141871581490339002" xil_pn:name="TRANEXT_bitFile_spartan3" xil_pn:prop_ck="-2938631409084463691" xil_pn:start_ts="1726059626">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="AsteroidsClockAVR.ut"/>
+      <outfile xil_pn:name="_xmsgs/bitgen.xmsgs"/>
+      <outfile xil_pn:name="asteroidsclockavr.bgn"/>
+      <outfile xil_pn:name="asteroidsclockavr.bin"/>
+      <outfile xil_pn:name="asteroidsclockavr.bit"/>
+      <outfile xil_pn:name="asteroidsclockavr.drc"/>
+      <outfile xil_pn:name="usage_statistics_webtalk.html"/>
+      <outfile xil_pn:name="webtalk.log"/>
+      <outfile xil_pn:name="webtalk_pn.xml"/>
+    </transform>
+    <transform xil_pn:end_ts="1726059626" xil_pn:in_ck="-7384750472311459348" xil_pn:name="TRAN_postRouteTrce" xil_pn:prop_ck="-820570033700456442" xil_pn:start_ts="1726059622">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="AsteroidsClockAVR.twr"/>
+      <outfile xil_pn:name="AsteroidsClockAVR.twx"/>
+      <outfile xil_pn:name="_xmsgs/trce.xmsgs"/>
+    </transform>
+  </transforms>
+
+</generated_project>

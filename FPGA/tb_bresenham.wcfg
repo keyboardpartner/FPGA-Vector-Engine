@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="E:/Dropbox/AsteroidsClock/FPGA ctlab/tb_bresenham_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="numeric_std" />
+            <top_module name="std_logic_1164" />
+            <top_module name="std_logic_arith" />
+            <top_module name="std_logic_signed" />
+            <top_module name="tb_bresenham" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="12" />
+   <wvobject fp_name="/tb_bresenham/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_bresenham/load_xy" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">load_xy</obj_property>
+      <obj_property name="ObjectShortName">load_xy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_bresenham/x1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">x1[11:0]</obj_property>
+      <obj_property name="ObjectShortName">x1[11:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#008000</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_bresenham/y1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">y1[11:0]</obj_property>
+      <obj_property name="ObjectShortName">y1[11:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#008000</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_bresenham/x2" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">x2[11:0]</obj_property>
+      <obj_property name="ObjectShortName">x2[11:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#008000</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_bresenham/y2" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">y2[11:0]</obj_property>
+      <obj_property name="ObjectShortName">y2[11:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#008000</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_bresenham/done" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">done</obj_property>
+      <obj_property name="ObjectShortName">done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_bresenham/beam_valid" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">beam_valid</obj_property>
+      <obj_property name="ObjectShortName">beam_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_bresenham/dac_rdy" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">dac_rdy</obj_property>
+      <obj_property name="ObjectShortName">dac_rdy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_bresenham/strobe" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">strobe</obj_property>
+      <obj_property name="ObjectShortName">strobe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_bresenham/x_val" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">x_val[11:0]</obj_property>
+      <obj_property name="ObjectShortName">x_val[11:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_bresenham/y_val" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">y_val[11:0]</obj_property>
+      <obj_property name="ObjectShortName">y_val[11:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+</wave_config>

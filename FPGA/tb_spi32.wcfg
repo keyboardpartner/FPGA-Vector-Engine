@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="E:/AsteroidsClock/FPGA ctlab/tb_spi32_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="numeric_std" />
+            <top_module name="std_logic_1164" />
+            <top_module name="std_logic_arith" />
+            <top_module name="std_logic_unsigned" />
+            <top_module name="tb_spi32" />
+            <top_module name="vcomponents" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="27" />
+   <wvobject fp_name="/tb_spi32/sysclk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">sysclk</obj_property>
+      <obj_property name="ObjectShortName">sysclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/ds_n" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ds_n</obj_property>
+      <obj_property name="ObjectShortName">ds_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/rs_n" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rs_n</obj_property>
+      <obj_property name="ObjectShortName">rs_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/d0_status" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">d0_status[7:0]</obj_property>
+      <obj_property name="ObjectShortName">d0_status[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/d3" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">d3[31:0]</obj_property>
+      <obj_property name="ObjectShortName">d3[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/miso" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">miso</obj_property>
+      <obj_property name="ObjectShortName">miso</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/rsel" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">rsel[7:0]</obj_property>
+      <obj_property name="ObjectShortName">rsel[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/strobe" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">strobe</obj_property>
+      <obj_property name="ObjectShortName">strobe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/data_lc" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">data_lc[31:0]</obj_property>
+      <obj_property name="ObjectShortName">data_lc[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/q1_conf" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">q1_conf[7:0]</obj_property>
+      <obj_property name="ObjectShortName">q1_conf[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/q2_conf" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">q2_conf[7:0]</obj_property>
+      <obj_property name="ObjectShortName">q2_conf[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/rst_lc0" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst_lc0</obj_property>
+      <obj_property name="ObjectShortName">rst_lc0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/inc_lc0" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">inc_lc0</obj_property>
+      <obj_property name="ObjectShortName">inc_lc0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/rst_lc1" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst_lc1</obj_property>
+      <obj_property name="ObjectShortName">rst_lc1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/inc_lc1" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">inc_lc1</obj_property>
+      <obj_property name="ObjectShortName">inc_lc1</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider19" type="divider">
+      <obj_property name="label">New Divider</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/sysclk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">sysclk</obj_property>
+      <obj_property name="ObjectShortName">sysclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/sck" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">sck</obj_property>
+      <obj_property name="ObjectShortName">sck</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/mosi" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mosi</obj_property>
+      <obj_property name="ObjectShortName">mosi</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/uut/sck_tick" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">sck_tick</obj_property>
+      <obj_property name="ObjectShortName">sck_tick</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/uut/sck_d2" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">sck_d2</obj_property>
+      <obj_property name="ObjectShortName">sck_d2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/uut/mosi_d1" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mosi_d1</obj_property>
+      <obj_property name="ObjectShortName">mosi_d1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/uut/mosi_d2" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mosi_d2</obj_property>
+      <obj_property name="ObjectShortName">mosi_d2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/uut/r_sri" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">r_sri[15:0]</obj_property>
+      <obj_property name="ObjectShortName">r_sri[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/uut/r_int" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">r_int[15:0]</obj_property>
+      <obj_property name="ObjectShortName">r_int[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/uut/q_sri" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">q_sri[31:0]</obj_property>
+      <obj_property name="ObjectShortName">q_sri[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_spi32/uut/q_int" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">q_int[31:0]</obj_property>
+      <obj_property name="ObjectShortName">q_int[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+</wave_config>

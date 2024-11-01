@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<symbol version="7" name="vector_engine">
+    <symboltype>BLOCK</symboltype>
+    <timestamp>2024-8-23T13:54:48</timestamp>
+    <pin polarity="Input" x="-16" y="-288" name="SYSCLK" />
+    <pin polarity="Input" x="-16" y="-224" name="LV_INCWR" />
+    <pin polarity="Input" x="-16" y="-160" name="LV_CMD" />
+    <pin polarity="Input" x="-16" y="96" name="SYNC" />
+    <pin polarity="Input" x="-16" y="-32" name="LV_DATA(31:0)" />
+    <pin polarity="Output" x="464" y="-288" name="DONE" />
+    <pin polarity="Output" x="464" y="32" name="BEAM_ON" />
+    <pin polarity="Output" x="464" y="-224" name="DAC_SEL" />
+    <pin polarity="Output" x="464" y="-160" name="DAC_WRN" />
+    <pin polarity="Output" x="464" y="352" name="TEST" />
+    <pin polarity="Output" x="464" y="-96" name="DAC_MPX(11:0)" />
+    <pin polarity="Output" x="464" y="-32" name="DAC_Z(3:0)" />
+    <pin polarity="Output" x="464" y="96" name="LV_ADDR(11:0)" />
+    <pin polarity="Output" x="464" y="288" name="VEC_ADDR(11:0)" />
+    <pin polarity="Output" x="464" y="160" name="PORT_0(7:0)" />
+    <pin polarity="Output" x="464" y="224" name="PORT_1(7:0)" />
+    <graph>
+        <attrtext style="alignment:BCENTER;fontsize:56;fontname:Arial" attrname="SymbolName" x="232" y="-328" type="symbol" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="56" y="-288" type="pin SYSCLK" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="56" y="-224" type="pin LV_INCWR" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="56" y="-160" type="pin LV_CMD" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="56" y="96" type="pin SYNC" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="56" y="-32" type="pin LV_DATA(31:0)" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="392" y="-288" type="pin DONE" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="392" y="32" type="pin BEAM_ON" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="392" y="-224" type="pin DAC_SEL" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="392" y="-160" type="pin DAC_WRN" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="392" y="352" type="pin TEST" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="392" y="-96" type="pin DAC_MPX(11:0)" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="392" y="-32" type="pin DAC_Z(3:0)" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="392" y="96" type="pin LV_ADDR(11:0)" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="392" y="288" type="pin VEC_ADDR(11:0)" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="392" y="160" type="pin PORT_0(7:0)" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="392" y="224" type="pin PORT_1(7:0)" />
+        <rect width="64" x="400" y="276" height="24" />
+        <line x2="464" y1="288" y2="288" x1="400" />
+        <rect width="64" x="400" y="148" height="24" />
+        <line x2="464" y1="160" y2="160" x1="400" />
+        <rect width="64" x="400" y="212" height="24" />
+        <line x2="464" y1="224" y2="224" x1="400" />
+        <rect width="64" x="400" y="84" height="24" />
+        <line x2="464" y1="96" y2="96" x1="400" />
+        <line x2="464" y1="-288" y2="-288" x1="400" />
+        <line x2="464" y1="-224" y2="-224" x1="400" />
+        <line x2="464" y1="-160" y2="-160" x1="400" />
+        <rect width="64" x="400" y="-108" height="24" />
+        <line x2="464" y1="-96" y2="-96" x1="400" />
+        <rect width="64" x="400" y="-44" height="24" />
+        <line x2="464" y1="-32" y2="-32" x1="400" />
+        <line x2="-16" y1="-288" y2="-288" x1="48" />
+        <rect width="64" x="-16" y="-44" height="24" />
+        <line x2="-16" y1="-32" y2="-32" x1="48" />
+        <line x2="-16" y1="-224" y2="-224" x1="48" />
+        <line x2="-16" y1="-160" y2="-160" x1="48" />
+        <line x2="-16" y1="96" y2="96" x1="48" />
+        <rect width="352" x="48" y="-320" height="696" />
+        <line x2="464" y1="32" y2="32" x1="400" />
+        <line x2="464" y1="352" y2="352" x1="400" />
+    </graph>
+</symbol>

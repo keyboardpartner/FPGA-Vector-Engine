@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="E:/Dropbox/AsteroidsClock/FPGA ctlab/tb_vector_engine_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="numeric_std" />
+            <top_module name="std_logic_1164" />
+            <top_module name="std_logic_arith" />
+            <top_module name="std_logic_signed" />
+            <top_module name="std_logic_textio" />
+            <top_module name="std_logic_unsigned" />
+            <top_module name="tb_vector_engine" />
+            <top_module name="textio" />
+            <top_module name="vcomponents" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="20" />
+   <wvobject fp_name="/tb_vector_engine/sysclk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">sysclk</obj_property>
+      <obj_property name="ObjectShortName">sysclk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_vector_engine/lv_incwr" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">lv_incwr</obj_property>
+      <obj_property name="ObjectShortName">lv_incwr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_vector_engine/sync" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">sync</obj_property>
+      <obj_property name="ObjectShortName">sync</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_vector_engine/lv_cmd" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">lv_cmd</obj_property>
+      <obj_property name="ObjectShortName">lv_cmd</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_vector_engine/lv_data" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">lv_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">lv_data[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_vector_engine/dac_mpx" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">dac_mpx[11:0]</obj_property>
+      <obj_property name="ObjectShortName">dac_mpx[11:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_vector_engine/done" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">done</obj_property>
+      <obj_property name="ObjectShortName">done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_vector_engine/dac_z" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">dac_z[2:0]</obj_property>
+      <obj_property name="ObjectShortName">dac_z[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_vector_engine/dac_sel" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">dac_sel</obj_property>
+      <obj_property name="ObjectShortName">dac_sel</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_vector_engine/dac_wrn" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">dac_wrn</obj_property>
+      <obj_property name="ObjectShortName">dac_wrn</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider17" type="divider">
+      <obj_property name="label">New Divider</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_vector_engine/uut/state" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_vector_engine/uut/next_start_addr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">next_start_addr[11:0]</obj_property>
+      <obj_property name="ObjectShortName">next_start_addr[11:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_vector_engine/uut/vec_ram_addr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">vec_ram_addr[11:0]</obj_property>
+      <obj_property name="ObjectShortName">vec_ram_addr[11:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_vector_engine/uut/vec_ram_return_addr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">vec_ram_return_addr[11:0]</obj_property>
+      <obj_property name="ObjectShortName">vec_ram_return_addr[11:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_vector_engine/uut/vec_ram_cmd" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">vec_ram_cmd[3:0]</obj_property>
+      <obj_property name="ObjectShortName">vec_ram_cmd[3:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_vector_engine/uut/vec_ram_beam" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">vec_ram_beam[2:0]</obj_property>
+      <obj_property name="ObjectShortName">vec_ram_beam[2:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_vector_engine/uut/vec_ram_x" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">vec_ram_x[11:0]</obj_property>
+      <obj_property name="ObjectShortName">vec_ram_x[11:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_vector_engine/uut/line_done" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">line_done</obj_property>
+      <obj_property name="ObjectShortName">line_done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_vector_engine/uut/circle_done" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">circle_done</obj_property>
+      <obj_property name="ObjectShortName">circle_done</obj_property>
+   </wvobject>
+</wave_config>
