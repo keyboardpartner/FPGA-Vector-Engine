@@ -1,3 +1,4 @@
+![GitHub Logo](https://github.com/keyboardpartner/FPGA-Vector-Engine/blob/main/ast_clk_1.jpg)
 ![GitHub Logo](https://github.com/keyboardpartner/FPGA-Vector-Engine/blob/main/ast_clk_2.jpg)
 
 # FPGA-Vector-Engine
