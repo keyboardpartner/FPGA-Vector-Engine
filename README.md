@@ -1,7 +1,7 @@
 ![GitHub Logo](https://github.com/keyboardpartner/FPGA-Vector-Engine/blob/main/ast_clk_1.jpg)
 ![GitHub Logo](https://github.com/keyboardpartner/FPGA-Vector-Engine/blob/main/ast_clk_2.jpg)
 
-# FPGA-Vector-Engine
+# FPGA Vector Engine with Scope Clock and Asteroids Game
 
 Dual DAC XY + Z Vector Engine with Asteroids Game and Scope Clock for use with CTLAB FPGA Board (XC3S400 FPGA plus ATmega644 controller)
 
