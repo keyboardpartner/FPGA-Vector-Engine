@@ -3,7 +3,7 @@
 
 # FPGA Vector Engine with Scope Clock and Asteroids Game
 
-Dual DAC XY + Z Vector Engine with Asteroids Game and Scope Clock for use with CTLAB FPGA Board (XC3S400 FPGA plus ATmega644 controller)
+Dual DAC XY + Z Vector Engine with Asteroids Game and Scope Clock for use with [CTLAB FPGA Board](https://www.sn7400.de/ctlab/) (XC3S400 FPGA plus ATmega644 controller)
 
 AVR 644 firmware written in AVRco Pascal, download for free [from e-lab website](https://www.e-lab.de/downloads/AVRco/rev4/index.html)
 
