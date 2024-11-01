@@ -7,7 +7,7 @@ Uses Dual DAC AD5447 output and Z/Audio R-DAC. Omit SRAM, AD9752 TxDAC and FreqZ
 
 Vector engine for scope clock and animations uses a BRAM in FPGA containing a list of vector commands. BRAM is loaded via SPI from ATmega644 controller.
 
-AVR 644 firmware written in AVRco Pascal, download for free [from e-lab website](https://www.e-lab.de/downloads/AVRco/rev4/index.html)
+AVR 644 firmware written in AVRco Pascal, download for free [from e-lab website](https://www.e-lab.de/downloads/AVRco/rev4/index.html). AVR flash and EEPROM may also be programmed with AVRdude programmer via ISP. Please note AVR fuse settings: SPIEN, EESAVE, CKSEL3, BODLEVEL0 and BODLEVEL1 must be set.
 
 HPGL Converter written in Delphi 10.1 (free community edition), requires CPORT library by [Dejan Crnila and Lars B. Dybdahl](https://sourceforge.net/projects/comport/), converts HPGL vector graphics to BRAM vector engine format. Vector data for logos and animations are stored on SD card, will be transferred to FPGA by AVR controller. Clock face and clock hands are created by AVR firmware as vectors for FPGA vector engine.
 
